@@ -1,21 +1,28 @@
 <cfscript>
   param name='message' default={};
-
-  if ( m.event('mcaction') == 'delete' ) {
-    try {
-      m.getBean('Person').loadBy(personid=m.event('pid')).delete();
-
-      message = {
-        type = 'success'
-        , text = '<i class="fa fa-thumbs-o-up"></i> Contact deleted.'
-      };
-    } catch(any e) {
-      message = {
-        type = 'danger'
-        , text = '<i class="fa fa-thumbs-o-down"></i> #e.message#'
-      };
-    };
+  if ( !Len(m.event('mcaction')) ) {
+    m.event('mcaction', 'list');
   }
+
+  // Delete
+    if ( m.event('mcaction') == 'delete' ) {
+      try {
+        m.getBean('Person').loadBy(personid=m.event('pid')).delete();
+        m.event('mcaction', 'list');
+        message = {
+          type = 'success'
+          , text = '<i class="fa fa-thumbs-o-up"></i> Contact deleted.'
+        };
+      } catch(any e) {
+        m.event('mcaction', 'list');
+        message = {
+          type = 'danger'
+          , text = '<i class="fa fa-thumbs-o-down"></i> #e.message#'
+        };
+      };
+    }
+
+  // @End Delete
 </cfscript>
 
 <script>
@@ -24,6 +31,10 @@
     m('.btn-delete').on('click', function(e){
       return confirm('Are you sure?') ? true : e.preventDefault();
     });
+
+    // m('#muracontact-addphone').on('click', function(e){
+    //   e.preventDefault();
+    // });
   });
 </script>
 
@@ -34,14 +45,6 @@
       <div class="muracontacts-heading">
         <h2>#esapiEncode('html', m.currentUser('fname'))#'s Contacts</h2>
       </div>
-      <cfif m.event('mcaction') eq 'edit'>
-        <form class="pad">
-          <input type="hidden" name="mcaction" value="list">
-          <button type="submit" class="btn btn-primary btn-back">
-            <i class="fa fa-arrow-left"></i>
-          </button>
-        </form>
-      </cfif>
 
       <!--- Messaging --->
       <cfif !StructIsEmpty(message)>
@@ -58,10 +61,11 @@
         <cftry>
           <cfinclude template="inc/#LCase(m.event('mcaction'))#.cfm" />
           <cfcatch>
-            <cfinclude template="inc/list.cfm" />
+            <cfdump var="#cfcatch#">
           </cfcatch>
         </cftry>
       </div>
+
     <cfelse>
       <!--- Not Logged In --->
       <div class="muracontacts-heading">
@@ -69,7 +73,9 @@
       </div>
       <p class="alert alert-info">You must be logged in to use <strong>MuraContacts</strong></p>
     </cfif>
+
   </div>
+  <!--- @End .muracontacts-wrapper --->
 
   <!--- quick + dirty styling (don't judge) --->
   <style>
@@ -80,5 +86,12 @@
     td.addrow a {margin:1em 0;}
     .alert .fa {font-size:1.75em;margin-right:0.25em;}
     form.muracontacts-formlink {display:inline-block;}
+    form ul.muracontacts-phonenumbers {padding:0;margin:0 0 1em 0;}
+    ul li.muracontacts-phonenumber > a {display:inline-block;}
+    a[href^="tel:"]:before {
+      content: "\260E";
+      display:inline-block;
+      margin-right: 0.5em;
+    }
   </style>
 </cfoutput>
