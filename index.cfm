@@ -1,19 +1,14 @@
 <cfscript>
   param name='message' default={};
-  //message = {};
 
   if ( m.event('mcaction') == 'delete' ) {
     try {
-
       m.getBean('Person').loadBy(personid=m.event('pid')).delete();
 
       message = {
         type = 'success'
         , text = '<i class="fa fa-thumbs-o-up"></i> Contact deleted.'
       };
-
-
-
     } catch(any e) {
       message = {
         type = 'danger'
@@ -22,14 +17,16 @@
     };
   }
 </cfscript>
+
 <script>
   // mura.js
-  mura(function() {
+  m(function() {
     m('.btn-delete').on('click', function(e){
       return confirm('Are you sure?') ? true : e.preventDefault();
     });
   });
 </script>
+
 <cfoutput>
   <div class="muracontacts-wrapper">
 
