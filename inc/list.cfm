@@ -34,7 +34,7 @@
 
             <td class="right">
               <!--- Edit --->
-              <a class="btn btn-default" href="./?mcaction=edit&amp;pid=#contact.get('personid')#">
+              <a class="btn btn-success" href="./?mcaction=edit&amp;pid=#contact.get('personid')#">
                 <i class="fa fa-pencil"></i>
               </a>
 
@@ -42,7 +42,7 @@
               <form class="muracontacts-formlink">
                 <input type="hidden" name="mcaction" value="delete">
                 <input type="hidden" name="pid" value="#contact.get('personid')#">
-                <button type="submit" class="btn btn-default btn-delete">
+                <button type="submit" class="btn btn-danger btn-delete">
                   <i class="fa fa-trash"></i>
                 </button>
               </form>

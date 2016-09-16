@@ -99,12 +99,9 @@
     <input type="hidden" name="phoneid" value="#m.event('phoneid')#">
     <input type="hidden" name="issubmitted" value="true">
 
-    <a class="btn btn-default" href="./?mcaction=edit&amp;pid=#m.event('pid')#">
-      <i class="fa fa-ban"></i>
-    </a>
-
     <button type="submit" class="btn btn-primary">
       <i class="fa fa-floppy-o"></i>
     </button>
+    <a class="btn btn-default" href="./?mcaction=edit&amp;pid=#m.event('pid')#"><i class="fa fa-ban"></i></a>
   </form>
 </cfoutput>
