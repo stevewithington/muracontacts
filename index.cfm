@@ -87,7 +87,8 @@
     .alert .fa {font-size:1.75em;margin-right:0.25em;}
     form.muracontacts-formlink {display:inline-block;}
     form ul.muracontacts-phonenumbers {padding:0;margin:0 0 1em 0;}
-    ul li.muracontacts-phonenumber > a {display:inline-block;}
+    ul li.muracontacts-phonenumber > a {display:inline-block;padding:5px 10px;margin:5px 0;}
+    ul li.muracontacts-phonenumber > a.btn-primary:hover {background-color:##286090;}
     a[href^="tel:"]:before {
       content: "\260E";
       display:inline-block;

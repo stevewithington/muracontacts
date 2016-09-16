@@ -114,16 +114,15 @@
               <cfloop condition="#itPhoneNumbers.hasNext()#">
                 <cfset phone = itPhoneNumbers.next()>
                 <li class="muracontacts-phonenumber">
-
-                  <!--- Phone Number --->
-                  <a class="btn btn-default" href="tel:#esapiEncode('html_attr', phone.get('phonenumber'))#">
-                    #esapiEncode('html', phone.get('phonenumber'))#
-                    <strong>#esapiEncode('html', phone.get('phonetype'))#</strong>
+                  <!--- Edit --->
+                  <a class="btn btn-sm btn-primary" href="./?mcaction=editphone&amp;pid=#contactBean.get('personid')#&amp;phoneid=#phone.get('phonenumberid')#">
+                    <i class="fa fa-pencil"></i>
                   </a>
 
-                  <!--- Edit --->
-                  <a class="btn" href="./?mcaction=editphone&amp;pid=#contactBean.get('personid')#&amp;phoneid=#phone.get('phonenumberid')#">
-                    <i class="fa fa-pencil"></i>
+                  <!--- Phone Number --->
+                  <a class="btn" href="tel:#esapiEncode('html_attr', phone.get('phonenumber'))#">
+                    #esapiEncode('html', phone.get('phonenumber'))#
+                    <strong>#esapiEncode('html', phone.get('phonetype'))#</strong>
                   </a>
                 </li>
               </cfloop>
