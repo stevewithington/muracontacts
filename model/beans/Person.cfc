@@ -23,22 +23,22 @@ component
 		property name="datemodified" datatype="datetime" nullable=true;
 
 	// relationships
-		// property
-		// 	name="phonenumbers"
-		// 	singularname="phonenumber"
-		// 	cfc="personphonenumber"
-		// 	fieldtype="one-to-many"
-		// 	loadkey="personid"
-		// 	cascade='delete'
-		// 	orderby="phonetype";
-		//
+		property
+			name="phonenumbers"
+			singularname="phonenumber"
+			cfc="personphonenumber"
+			fieldtype="one-to-many"
+			loadkey="personid"
+			cascade="delete"
+			orderby="phonetype";
+
 		// property
 		// 	name="addresses"
 		// 	singularname="address"
 		// 	cfc="personaddress"
 		// 	fieldtype="one-to-many"
 		// 	loadkey="personid"
-		// 	cascade='delete'
+		// 	cascade="delete"
 		// 	orderby="addresstype";
 
 		// Custom Validations

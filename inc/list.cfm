@@ -27,29 +27,22 @@
 
             <!--- Contact Name --->
             <td>
-              <form class="muracontacts-formlink">
-                <input type="hidden" name="mcaction" value="edit">
-                <input type="hidden" name="pid" value="#contact.get('personid')#">
-                <button class="btn btn-link">
-                  #esapiEncode('html', contact.getFullName())#
-                </button>
-              </form>
+              <a class="btn" href="./?mcaction=edit&amp;pid=#contact.get('personid')#">
+                #esapiEncode('html', contact.getFullName())#
+              </a>
             </td>
 
             <td class="right">
               <!--- Edit --->
-              <form class="muracontacts-formlink">
-                <input type="hidden" name="mcaction" value="edit">
-                <input type="hidden" name="pid" value="#contact.get('personid')#">
-                <button type="submit" class="btn btn-default">
-                  <i class="fa fa-pencil"></i>
-                </button>
-              </form>
+              <a class="btn btn-success" href="./?mcaction=edit&amp;pid=#contact.get('personid')#">
+                <i class="fa fa-pencil"></i>
+              </a>
+
               <!--- Delete --->
               <form class="muracontacts-formlink">
                 <input type="hidden" name="mcaction" value="delete">
                 <input type="hidden" name="pid" value="#contact.get('personid')#">
-                <button type="submit" class="btn btn-default btn-delete">
+                <button type="submit" class="btn btn-danger btn-delete">
                   <i class="fa fa-trash"></i>
                 </button>
               </form>
@@ -73,12 +66,9 @@
       <tfoot>
         <tr>
           <td colspan="3" class="addrow">
-            <form class="pad">
-              <input type="hidden" name="mcaction" value="edit">
-              <button type="submit" class="btn btn-primary">
-            	   <i class="fa fa-plus"></i>
-              </button>
-            </form>
+            <a class="btn btn-primary" href="./?mcaction=edit&amp;pid=">
+          	   <i class="fa fa-plus"></i>
+            </a>
           </td>
         </tr>
       </tfoot>
