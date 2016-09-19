@@ -69,8 +69,8 @@
 
 <script>
   // mura.js
-  m(function() {
-    m.loader().loadcss(m.themepath + '/display_objects/MuraContacts/assets/css/muracontacts.min.css');
-    m.loader().loadjs(m.themepath + '/display_objects/MuraContacts/assets/js/dist/muracontacts.min.js');
+  Mura(function() {
+    Mura.loader().loadcss(Mura.themepath + '/display_objects/MuraContacts/assets/css/muracontacts.min.css');
+    Mura.loader().loadjs(Mura.themepath + '/display_objects/MuraContacts/assets/js/dist/muracontacts.min.js');
   });
 </script>
