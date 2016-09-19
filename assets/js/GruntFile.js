@@ -13,7 +13,7 @@ module.exports = function(grunt) {
                     name=name[name.length-1];
                     name=name.split('.');
                     return name[0].toLowerCase();
-                    }
+                  }
               }
           }
       },
@@ -50,6 +50,12 @@ module.exports = function(grunt) {
           'dist/muracontacts.min.js': ['dist/muracontacts.js']
         }
       }
+    },
+    watch: {
+      scripts: {
+        files: ['src/muracontacts.js','src/templates/*.hb'],
+        tasks: ['default']
+      }
     }
   });
 
@@ -57,7 +63,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.registerTask('default',['handlebars','replace','concat','uglify']);
-
 
 };

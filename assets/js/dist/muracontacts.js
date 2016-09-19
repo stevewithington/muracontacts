@@ -4,7 +4,7 @@ this["muracontacts"]["templates"] = this["muracontacts"]["templates"] || {};
 this["muracontacts"]["templates"]["example"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper;
 
-  return "<div>"
+  return "<div class=\"test\">"
     + container.escapeExpression(((helper = (helper = helpers.exampleVar || (depth0 != null ? depth0.exampleVar : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"exampleVar","hash":{},"data":data}) : helper)))
     + "</div>\n";
 },"useData":true});;Mura.DisplayObject.muracontacts=Mura.UI.extend({
@@ -14,7 +14,7 @@ this["muracontacts"]["templates"]["example"] = window.mura.Handlebars.template({
   }
 
   , setup:function() {
-    this.queryParams=this.getQueryStringParams(location.search);
+    this.queryParams=Mura.getQueryURLParams(location.search);
     this.queryParams.mcaction=this.queryParams.mcaction || 'list';
 
     if(this.queryParams.mcaction=='list'){
@@ -41,25 +41,25 @@ this["muracontacts"]["templates"]["example"] = window.mura.Handlebars.template({
       });
   }
 
-  ,getQueryStringParams:function(queryString) {
-	    var params = {};
-	    var e,
-	        a = /\+/g,  // Regex for replacing addition symbol with a space
-	        r = /([^&;=]+)=?([^&;]*)/g,
-	        d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
-
-	        if(queryString.substring(0,1)=='?'){
-	        	var q=queryString.substring(1);
-	        } else {
-	        	var q=queryString;
-	        }
-
-
-	    while (e = r.exec(q))
-	       params[d(e[1]).toLowerCase()] = d(e[2]);
-
-	    return params;
-	}
+  // ,getQueryStringParams:function(queryString) {
+	//     var params = {};
+	//     var e,
+	//         a = /\+/g,  // Regex for replacing addition symbol with a space
+	//         r = /([^&;=]+)=?([^&;]*)/g,
+	//         d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
+  //
+	//         if(queryString.substring(0,1)=='?'){
+	//         	var q=queryString.substring(1);
+	//         } else {
+	//         	var q=queryString;
+	//         }
+  //
+  //
+	//     while (e = r.exec(q))
+	//        params[d(e[1]).toLowerCase()] = d(e[2]);
+  //
+	//     return params;
+	// }
 
   // ,registerHelpers: function() {
   //   var self = this;

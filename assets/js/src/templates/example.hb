@@ -1,1 +1,1 @@
-<div>{{exampleVar}}</div>
+<div class="test">{{exampleVar}}</div>

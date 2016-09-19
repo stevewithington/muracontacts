@@ -5,7 +5,7 @@ Mura.DisplayObject.muracontacts=Mura.UI.extend({
   }
 
   , setup:function() {
-    this.queryParams=this.getQueryStringParams(location.search);
+    this.queryParams=Mura.getQueryURLParams(location.search);
     this.queryParams.mcaction=this.queryParams.mcaction || 'list';
 
     if(this.queryParams.mcaction=='list'){
@@ -32,25 +32,25 @@ Mura.DisplayObject.muracontacts=Mura.UI.extend({
       });
   }
 
-  ,getQueryStringParams:function(queryString) {
-	    var params = {};
-	    var e,
-	        a = /\+/g,  // Regex for replacing addition symbol with a space
-	        r = /([^&;=]+)=?([^&;]*)/g,
-	        d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
-
-	        if(queryString.substring(0,1)=='?'){
-	        	var q=queryString.substring(1);
-	        } else {
-	        	var q=queryString;
-	        }
-
-
-	    while (e = r.exec(q))
-	       params[d(e[1]).toLowerCase()] = d(e[2]);
-
-	    return params;
-	}
+  // ,getQueryStringParams:function(queryString) {
+	//     var params = {};
+	//     var e,
+	//         a = /\+/g,  // Regex for replacing addition symbol with a space
+	//         r = /([^&;=]+)=?([^&;]*)/g,
+	//         d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
+  //
+	//         if(queryString.substring(0,1)=='?'){
+	//         	var q=queryString.substring(1);
+	//         } else {
+	//         	var q=queryString;
+	//         }
+  //
+  //
+	//     while (e = r.exec(q))
+	//        params[d(e[1]).toLowerCase()] = d(e[2]);
+  //
+	//     return params;
+	// }
 
   // ,registerHelpers: function() {
   //   var self = this;
