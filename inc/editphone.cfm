@@ -22,15 +22,25 @@
 
   // Save Form
   if ( m.event('issubmitted') == true ) {
-    message = phoneNumberBean.getIsNew() ? 'Added!' : 'Updated!';
 
-    result = phoneNumberBean
-              .set('personid', form.pid)
-              .set('phonetype', form.phonetype)
-              .set('phonenumber', form.phonenumber)
-              .save();
+    // Validate CSRF Tokens
+    if ( m.validateCSRFTokens(context=phoneNumberBean.get('phonenumberid')) ) {
+      // Tokens match
+      message = phoneNumberBean.getIsNew() ? 'Added!' : 'Updated!';
 
-    errors = result.get('errors');
+      result = phoneNumberBean
+                .set('personid', form.pid)
+                .set('phonetype', form.phonetype)
+                .set('phonenumber', form.phonenumber)
+                .save();
+
+      errors = result.get('errors');
+    } else {
+      // Tokens don't match
+      errors = {
+        error1 = 'Unable to save due to invalid CSRF tokens.'
+      };
+    }
   }
 </cfscript>
 
@@ -98,6 +108,9 @@
     <input type="hidden" name="pid" value="#m.event('pid')#">
     <input type="hidden" name="phoneid" value="#m.event('phoneid')#">
     <input type="hidden" name="issubmitted" value="true">
+
+    <!--- Cross-Site Request Forgery (CSRF) Tokens --->
+    #$.renderCSRFTokens(format='form', context=m.event('phoneid'))#
 
     <button type="submit" class="btn btn-primary">
       <i class="fa fa-floppy-o"></i>
