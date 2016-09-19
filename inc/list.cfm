@@ -1,10 +1,10 @@
 <cfscript>
-  // Contacts Iterator
+  // Contacts Iterator (using M7+ feed syntax)
   itContacts = m
                 .getFeed('person')
-                .where()
+                .where()  // .where() is optional ... but it makes more sense
                 .prop('userid')
-                .isEQ(m.currentUser('userid'))
+                .isEQ( m.currentUser('userid') )
                 .getIterator();
 </cfscript>
 
