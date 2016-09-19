@@ -1,1 +1,1 @@
-<h1>{{exampleVar}}</h1>
+<div>{{exampleVar}}</div>
