@@ -1,0 +1,26 @@
+<tr>
+
+  <!-- Contact Name -->
+  <td>
+    <a class="btn" href="./#mcaction=edit&amp;pid={{properties.personid}}">
+      {{properties.fullname}}
+    </a>
+  </td>
+
+  <td class="right">
+    <!-- Edit -->
+    <a class="btn btn-success" href="./#mcaction=edit&amp;pid={{properties.personid}}">
+      <i class="fa fa-pencil"></i>
+    </a>
+
+    <!-- Delete -->
+    <form class="muracontacts-formlink">
+      <input type="hidden" name="mcaction" value="delete">
+      <input type="hidden" name="pid" value="{{properties.personid}}">
+      <button type="submit" class="btn btn-danger btn-delete">
+        <i class="fa fa-trash"></i>
+      </button>
+    </form>
+  </td>
+
+</tr>

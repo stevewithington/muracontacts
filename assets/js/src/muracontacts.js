@@ -1,66 +1,203 @@
-Mura.DisplayObject.muracontacts=Mura.UI.extend({
-  render:function(){
-    // objectparams are available under 'this.context.{yourVar}'
-    this.setup();
+Mura.DisplayObject.muracontacts = Mura.UI.extend({
+  // objectparams are available under 'this.context.{yourVar}'
+
+  // Mura invokes this method by default
+  render: function() {
+    this.main(); // Delegating to main()
   }
 
-  , setup:function() {
-    this.queryParams=Mura.getQueryURLParams(location.search);
-    this.queryParams.mcaction=this.queryParams.mcaction || 'list';
+  , main: function() {
+    var self = this;
 
-    if(this.queryParams.mcaction=='list'){
-      this.renderList();
-    } else {
-      this.renderForm();
+    Mura
+      .getCurrentUser()
+      .then(function(currentUser) {
+        self.setLoggedInUser(currentUser.properties);
+
+        if ( currentUser.get('isnew') === 1 ) {
+          // User not logged in
+          Mura(self.context.targetEl)
+            .html(muracontacts.templates.body({body:muracontacts.templates.loggedout()}));
+        } else {
+          // User IS logged in
+
+          Mura(window)
+            .on('hashchange', function(e) {
+              self.handleHash();
+            });
+
+          self.handleHash();
+        }
+      });
+  }
+
+  , handleHash: function() {
+    var self = this;
+    self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
+    self.queryParams.mcaction = self.queryParams.mcaction || 'list';
+
+    switch(self.queryParams.mcaction) {
+      case 'edit':
+        self.renderEditContact();
+        break;
+      case 'editphone':
+        self.renderEditPhone();
+        break;
+      case 'delete':
+        self.handleDelete();
+        break;
+      default: // list or anything else that isn't accounted for
+        self.renderList();
     }
-
   }
 
-  , renderList:function(){
-      Mura(this.context.targetEl).html(muracontacts.templates.example({exampleVar:"I'm a list"}));
-      this.wireUpMarkup();
+  , handleDelete: function() {
+    var self = this;
+
+    self.queryParams = Mura.getQueryStringParams();
+    self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
+
+    Mura
+      .getEntity('person')
+      .loadBy('personid', self.queryParams.pid)
+      .then(function(person) {
+        person
+          .delete()
+          .then(
+            function(obj) {
+              console.log(obj);
+              // success
+              self.renderBody('Deleted!');
+            },
+            function(obj) {
+              console.log(obj);
+              // fail
+              self.renderBody('Not deleted.');
+            }
+          );
+      });
   }
 
-  , renderForm:function(){
-      Mura(this.context.targetEl).html(muracontacts.templates.example({exampleVar:"I'm a form"}));
-      this.wireUpMarkup();
+  , renderList: function() {
+    var self = this
+        , loggedInUser = self.getLoggedInUser()
+        , userid = loggedInUser.userid;
+
+    Mura
+      .getFeed('person')
+      .where()
+      .prop('userid')
+      .isEQ( userid )
+      .getQuery()
+      .then(function(people) {
+          // success
+          self.renderBody(muracontacts.templates.contactlisttable({people:people.get('items')}));
+        },function(e) {
+          // error
+          console.warn('Error getting PERSON feed');
+          console.log(e);
+        });
   }
 
-  , wireUpMarkup:function(){
-      Mura(this.context.targetEl).find('.btn-delete').on('click', function(e){
+  , renderEditContact: function() {
+    var self = this
+        , body = ''
+        , message = '';
+
+    self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
+    self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
+
+    Mura
+      .getBean('person')
+      .loadBy('personid', self.queryParams.pid)
+      .then(
+        function(person) {
+          // success
+          var contact = person.properties
+              , body = ''
+              , message = '';
+
+          contact.exists = contact.isnew === 0;
+          contact.personid = contact.exists ? contact.personid : Mura.createUUID();
+          contact.label = contact.exists ? 'Update' : 'Add';
+
+          Mura
+            .getFeed('personphonenumber')
+            .where()
+            .prop('personid')
+            .isEQ( contact.personid )
+            .getQuery()
+            .then(function(phonenumbers) {
+                // success
+                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')});
+                self.renderBody(body, message);
+              },function(e) {
+                // error
+                console.warn('Error getting PHONENUMBERS feed');
+                console.log(e);
+              });
+
+        },
+        function(e) {
+          // fail
+          console.warn('Error getting PERSON bean');
+          console.log(e);
+        }
+      );
+  }
+
+  , renderEditPhone: function() {
+    var self = this
+        , body = '';
+
+    self.renderBody(muracontacts.templates.editphone({body:body}));
+  }
+
+  , renderBody: function(body, message) {
+    var self = this
+        , body = body === undefined ? '' : body
+        , loggedInUser = self.getLoggedInUser();
+
+    Mura
+      .loader()
+      .loadcss(self.getDisplayObjectPath() + '/assets/css/muracontacts.min.css');
+
+    // Wraps body with muracontacts-wrapper div
+    Mura(self.context.targetEl)
+      .html(muracontacts.templates.body({
+        body: body
+        , message: message
+        , userfirstname: loggedInUser.fname
+      })
+    );
+
+    // Confirm delete actions
+    Mura(self.context.targetEl)
+      .find('.btn-delete')
+      .on('click', function(e) {
         return confirm('Are you sure?') ? true : e.preventDefault();
       });
   }
 
-  // ,getQueryStringParams:function(queryString) {
-	//     var params = {};
-	//     var e,
-	//         a = /\+/g,  // Regex for replacing addition symbol with a space
-	//         r = /([^&;=]+)=?([^&;]*)/g,
-	//         d = function (s) { return decodeURIComponent(s.replace(a, " ")); };
-  //
-	//         if(queryString.substring(0,1)=='?'){
-	//         	var q=queryString.substring(1);
-	//         } else {
-	//         	var q=queryString;
-	//         }
-  //
-  //
-	//     while (e = r.exec(q))
-	//        params[d(e[1]).toLowerCase()] = d(e[2]);
-  //
-	//     return params;
-	// }
+  // Mura automatically triggers this method for us
+  ,registerHelpers: function() {
+    var self = this;
 
-  // ,registerHelpers: function() {
-  //   var self = this;
-  //
-  //   Mura.Handlebars.registerHelper('eachColRow',function(row, columns, options) {
-  //     var ret = "";
-  //     for(var i = 0;i < columns.length;i++) {
-  //       ret = ret + options.fn(row[columns[i].column]);
-  //     }
-  //     return ret;
-  //   });
-  // }
+    // Example of how to register a helper
+    //Mura.Handlebars.registerHelper('helpername', function(arg1, arg2) {});
+  }
+
+  , setLoggedInUser: function(loggedInUser) {
+    this.loggedInUser = loggedInUser;
+  }
+
+  , getLoggedInUser: function() {
+    return this.loggedInUser;
+  }
+
+  , getDisplayObjectPath: function() {
+    // Would need to modify if dropping into a plugin
+    return Mura.themepath + '/display_objects/muracontacts';
+  }
+
 });

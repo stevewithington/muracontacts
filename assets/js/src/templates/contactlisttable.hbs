@@ -1,0 +1,33 @@
+<div class="table-responsive">
+  <table class="table-condensed table-hover">
+
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>&nbsp;</th>
+      </tr>
+    </thead>
+
+    {{#if people.length}}
+      {{#each people}}
+        {{> contactlistitem}}
+      {{/each}}
+    {{else}}
+      <tr>
+        <td colspan="2" class="info">
+          <i class="fa fa-info-circle"></i> No contacts exist yet.
+        </td>
+      </tr>
+    {{/if}}
+
+    <tfoot>
+      <tr>
+        <td colspan="2" class="addrow">
+          <a class="btn btn-primary" href="./#mcaction=edit&amp;pid=">
+            <i class="fa fa-plus"></i>
+          </a>
+        </td>
+    </tfoot>
+
+  </table>
+</div>

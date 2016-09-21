@@ -65,10 +65,35 @@ component
 				return this;
 			}
 
+		// Custom getAllValues() ~ Needed for Mura.js to set custom attributes on object
+			public any function getAllValues(){
+				var values = super.getAllValues();
+				values.fullname = this.getFullName();
+				return values;
+			}
+
+		// JSON API Restrictions (used by Mura.js)
+			public any function allowDelete(m) {
+				// verify the user is deleting their own contact, and not someone else's
+				return arguments.m.currentUser('userid') == this.get('userid');
+			}
+			// public any function allowRead(m) {
+			// 	return arguments.m.currentUser('userid') == this.get('userid');
+			// }
+			// public any function allowSave(m) {
+			// 	return arguments.m.currentUser('userid') == this.get('userid');
+			// }
+			// public any function allowQueryParams(params, m) {
+			// 	if ( StructKeyExists(arguments.params, getPrimaryKey()) ) {
+			// 		this.loadBy('#getPrimaryKey()#'=arguments.params[getPrimaryKey()]);
+			// 	}
+			// 	return arguments.m.currentUser('userid') == this.get('userid');
+			// }
+		// @END JSON API Restrictions
+
 		// Custom Methods
 			public any function getFullName() {
 				return get('namefirst') & ' ' & get('namelast');
 			}
-
 		// @end Custom Methods
 }

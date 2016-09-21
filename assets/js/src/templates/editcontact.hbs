@@ -1,0 +1,73 @@
+<div class="pad">
+  <a class="btn btn-primary" href="./#mcaction=list">
+    <i class="fa fa-arrow-left"></i>
+  </a>
+
+  <!-- Delete -->
+  {{#if contact.exists}}
+    <form method="post" class="muracontacts-formlink" action="./#mcation=list">
+      <input type="hidden" name="mcaction" value="delete">
+      <input type="hidden" name="pid" value="{{contact.personid}}">
+      <button type="submit" class="btn btn-danger btn-delete">
+        <i class="fa fa-trash"></i>
+      </button>
+    </form>
+  {{/if}}
+
+</div>
+
+<h3>{{contact.label}} Contact</h3>
+
+<form method="post" class="pad">
+  <div class="form-group">
+    <label for="namefirst">First Name</label>
+    <input type="text" class="form-control" name="namefirst" value="{{contact.namefirst}}">
+  </div>
+  <div class="form-group">
+    <label for="namelast">Last Name</label>
+    <input type="text" class="form-control" name="namelast" value="{{contact.namelast}}">
+  </div>
+
+  <input type="hidden" name="mcaction" value="edit">
+  <input type="hidden" name="pid" value="{{contact.personid}}">
+  <input type="hidden" name="issubmitted" value="true">
+
+  <!-- Cross-Site Request Forgery (CSRF) Tokens -->
+
+
+  <button type="submit" class="btn btn-primary">
+    <i class="fa fa-floppy-o"></i>
+  </button>
+  <a class="btn btn-default" href="./#mcaction=list"><i class="fa fa-ban"></i></a>
+</form>
+
+<!-- Phone Number(s) -->
+  {{#if contact.exists}}
+    <div class="row">
+      <div class="col-md-12">
+
+        <label>Phone Numbers</label>
+        <ul class="nav muracontacts-phonenumbers">
+
+          {{#if phonenumbers.length}}
+            {{#each phonenumbers}}
+              {{> phonelistitem}}
+            {{/each}}
+          {{else}}
+            <li class="muracontacts-phonenumber">
+              <i class="fa fa-info-circle"></i> No phone numbers exist yet.
+            </li>
+          {{/if}}
+
+        </ul>
+
+        <!--- Add Phone --->
+        <div class="pad">
+          <a class="btn btn-success btn-sm muracontacts-addphone-button" href="./#mcaction=editphone&amp;pid={{contact.personid}}">
+            <i class="fa fa-plus"></i> Phone
+          </a>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+<!-- @End Phone Number(s) -->

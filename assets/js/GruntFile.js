@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       handlebars: {
           all: {
               files: {
-                  'src/templates.js': ['src/templates/*.hb']
+                  'src/templates.js': ['src/templates/*.hb','src/templates/*.hbs']
               },
               options: {
                    namespace: 'muracontacts.templates',
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
     },
     watch: {
       scripts: {
-        files: ['src/muracontacts.js','src/templates/*.hb'],
+        files: ['src/muracontacts.js','src/templates/*.hbs'],
         tasks: ['default']
       }
     }
