@@ -136,7 +136,6 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
   render: function() {
     //this.container = Mura(this.context.targetEl); // doesn't work yet
     this.container = jQuery(Mura(this.context.targetEl).node); // works
-    console.log(this.container);
     this.main(); // Delegating to main()
   }
 
