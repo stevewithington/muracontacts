@@ -16,18 +16,18 @@ window.mura.Handlebars.registerPartial("contactlistitem", window.mura.Handlebars
 },"useData":true}));
 
 window.mura.Handlebars.registerPartial("phonelistitem", window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, alias1=container.lambda, alias2=container.escapeExpression;
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
 
   return "<li class=\"muracontacts-phonenumber\">\n  <!-- Edit -->\n  <a class=\"btn btn-sm btn-primary\" href=\"./#mcaction=editphone&amp;pid="
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.personid : stack1), depth0))
+    + alias4(((helper = (helper = helpers.personid || (depth0 != null ? depth0.personid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"personid","hash":{},"data":data}) : helper)))
     + "&amp;phoneid="
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.phonenumberid : stack1), depth0))
+    + alias4(((helper = (helper = helpers.phonenumberid || (depth0 != null ? depth0.phonenumberid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phonenumberid","hash":{},"data":data}) : helper)))
     + "\">\n    <i class=\"fa fa-pencil\"></i>\n  </a>\n\n  <!-- Phone Number -->\n  <a class=\"btn\" href=\"tel:"
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.phonenumber : stack1), depth0))
+    + alias4(((helper = (helper = helpers.phonenumber || (depth0 != null ? depth0.phonenumber : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phonenumber","hash":{},"data":data}) : helper)))
     + "\">\n    "
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.phonenumber : stack1), depth0))
+    + alias4(((helper = (helper = helpers.phonenumber || (depth0 != null ? depth0.phonenumber : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phonenumber","hash":{},"data":data}) : helper)))
     + "\n    <strong>"
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.phonetype : stack1), depth0))
+    + alias4(((helper = (helper = helpers.phonetype || (depth0 != null ? depth0.phonetype : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phonetype","hash":{},"data":data}) : helper)))
     + "</strong>\n  </a>\n</li>\n";
 },"useData":true}));
 
@@ -124,7 +124,27 @@ this["muracontacts"]["templates"]["editcontact"] = window.mura.Handlebars.templa
 },"usePartial":true,"useData":true});
 
 this["muracontacts"]["templates"]["editphone"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<h3>Edit Phone</h3>\n";
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "\n<div class=\"pad\">\n  <a class=\"btn btn-primary\" href=\"./#mcaction=edit&amp;pid="
+    + alias4(((helper = (helper = helpers.personid || (depth0 != null ? depth0.personid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"personid","hash":{},"data":data}) : helper)))
+    + "\">\n    <i class=\"fa fa-arrow-left\"></i>\n  </a>\n\n  <!--- Delete --->\n  <form class=\"muracontacts-formlink\">\n    <input type=\"hidden\" name=\"mcaction\" value=\"deletephone\">\n    <input type=\"hidden\" name=\"phoneid\" value=\""
+    + alias4(((helper = (helper = helpers.phoneid || (depth0 != null ? depth0.phoneid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phoneid","hash":{},"data":data}) : helper)))
+    + "\">\n    <button type=\"submit\" class=\"btn btn-danger btn-delete\">\n      <i class=\"fa fa-trash\"></i>\n    </button>\n  </form>\n</div>\n\n<h3>"
+    + alias4(((helper = (helper = helpers.fullname || (depth0 != null ? depth0.fullname : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"fullname","hash":{},"data":data}) : helper)))
+    + "</h3>\n<h4>"
+    + alias4(((helper = (helper = helpers.label || (depth0 != null ? depth0.label : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"label","hash":{},"data":data}) : helper)))
+    + " Phone</h4>\n\n<form method=\"post\" class=\"muracontacts-form\">\n  <div class=\"form-group\">\n    <label for=\"phonenumber\">Phone Number</label>\n    <input type=\"text\" class=\"form-control\" name=\"phonenumber\" value=\""
+    + alias4(((helper = (helper = helpers.phonenumber || (depth0 != null ? depth0.phonenumber : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phonenumber","hash":{},"data":data}) : helper)))
+    + "\">\n  </div>\n  <div class=\"form-group\">\n    <label for=\"phonetype\">Phone Type</label>\n    <select name=\"phonetype\" class=\"form-control\">\n      <option value=\"\">- Select -</option>\n\n      <cfloop array=\"#phonetypes#\" index=\"phonetype\">\n        <option value=\""
+    + alias4(((helper = (helper = helpers.phonetype || (depth0 != null ? depth0.phonetype : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phonetype","hash":{},"data":data}) : helper)))
+    + "\"<cfif phoneNumberBean.get('phonetype') eq phonetype> selected=\"selected\"</cfif>>\n          #phonetype#\n        </option>\n      </cfloop>\n\n    </select>\n  </div>\n\n  <input type=\"hidden\" name=\"mcaction\" value=\"editphone\">\n  <input type=\"hidden\" name=\"personid\" value=\""
+    + alias4(((helper = (helper = helpers.personid || (depth0 != null ? depth0.personid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"personid","hash":{},"data":data}) : helper)))
+    + "\">\n  <input type=\"hidden\" name=\"phoneid\" value=\""
+    + alias4(((helper = (helper = helpers.phoneid || (depth0 != null ? depth0.phoneid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"phoneid","hash":{},"data":data}) : helper)))
+    + "\">\n  <input type=\"hidden\" name=\"issubmitted\" value=\"true\">\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=edit&amp;pid="
+    + alias4(((helper = (helper = helpers.personid || (depth0 != null ? depth0.personid : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"personid","hash":{},"data":data}) : helper)))
+    + "\"><i class=\"fa fa-ban\"></i></a>\n</form>\n";
 },"useData":true});
 
 this["muracontacts"]["templates"]["errormessages"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
@@ -136,7 +156,7 @@ this["muracontacts"]["templates"]["errormessages"] = window.mura.Handlebars.temp
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<h4>Please review:</h4>\n<ul>\n"
+  return "<h4><i class=\"fa fa-exclamation-triangle\"></i> Ooops!</h4>\n<ul>\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.errors : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</ul>\n";
 },"useData":true});
@@ -361,7 +381,7 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
             .getQuery()
             .then(function(phonenumbers) {
                 // success
-                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')});
+                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.getAll()});
                 self.renderBody(body, message);
               },function(e) {
                 // error
@@ -378,11 +398,66 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       );
   }
 
-  , renderEditPhone: function() {
+  , renderEditPhone: function(objform) {
     var self = this
-        , body = '';
+        , body = ''
+        , pid = objform === undefined || !objform.hasOwnProperty('personid') || !Mura.isUUID(objform.personid)
+            ? ''
+            : objform.personid
+        , phonenumberid = objform === undefined || !objform.hasOwnProperty('phonenumberid') || !Mura.usUUID(objform.phonenumberid)
+            ? Mura.createUUID()
+            : objform.phonenumberid;
 
-    self.renderBody(muracontacts.templates.editphone({body:body}));
+    self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
+
+    if ( Mura.isEmptyObject(objform) ) {
+      pid = self.queryParams.pid !== undefined && Mura.isUUID(self.queryParams.pid) ? self.queryParams.pid : pid;
+      phonenumberid = self.queryParams.phonenumberid !== undefined && Mura.isUUID(self.queryParams.phonenumberid) ? self.queryParams.phonenumberid : phonenumberid;
+    }
+
+    // we need a personid ... so send them back to the list
+    if ( pid.length === 0 ) {
+      return window.location = './';
+    }
+
+    // fix URL for new phone numbers
+    if ( !self.queryParams.hasOwnProperty('phonenumberid') || !Mura.isUUID(self.queryParams.phonenumberid) ) {
+      window.location.hash = 'mcaction=editphone&pid=' + pid + '&phonenumberid=' + phonenumberid;
+    }
+
+    Mura
+      .getBean('personphonenumber')
+      .loadBy('phonenumberid', phonenumberid)
+      .then(
+        function(phone) {
+          // success
+          var phone = phone.getAll()
+              , body = ''
+              , message = '';
+
+          phone.exists = phone.isnew === 0;
+          phone.personid = phone.exists ? phone.personid : pid;
+          phone.label = phone.exists ? 'Update' : 'Add';
+
+          if ( objform.hasOwnProperty('phonenumber') ) {
+            phone.phonenumber = objform.phonenumber;
+          }
+
+          if ( objform.hasOwnProperty('phonetype') ) {
+            phone.phonetype = objform.phonetype;
+          }
+
+          body = muracontacts.templates.editphone(phone:phone);
+          self.renderBody(body, message);
+
+        },
+        function(e) {
+          // fail
+          console.warn('Error getting PHONENUMBER bean');
+          console.log(e);
+        }
+      );
+
   }
 
   , renderBody: function(body) {

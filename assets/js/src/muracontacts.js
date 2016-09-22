@@ -216,7 +216,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             .getQuery()
             .then(function(phonenumbers) {
                 // success
-                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')});
+                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.getAll()});
                 self.renderBody(body, message);
               },function(e) {
                 // error
@@ -233,11 +233,66 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       );
   }
 
-  , renderEditPhone: function() {
+  , renderEditPhone: function(objform) {
     var self = this
-        , body = '';
+        , body = ''
+        , pid = objform === undefined || !objform.hasOwnProperty('personid') || !Mura.isUUID(objform.personid)
+            ? ''
+            : objform.personid
+        , phonenumberid = objform === undefined || !objform.hasOwnProperty('phonenumberid') || !Mura.usUUID(objform.phonenumberid)
+            ? Mura.createUUID()
+            : objform.phonenumberid;
 
-    self.renderBody(muracontacts.templates.editphone({body:body}));
+    self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
+
+    if ( Mura.isEmptyObject(objform) ) {
+      pid = self.queryParams.pid !== undefined && Mura.isUUID(self.queryParams.pid) ? self.queryParams.pid : pid;
+      phonenumberid = self.queryParams.phonenumberid !== undefined && Mura.isUUID(self.queryParams.phonenumberid) ? self.queryParams.phonenumberid : phonenumberid;
+    }
+
+    // we need a personid ... so send them back to the list
+    if ( pid.length === 0 ) {
+      return window.location = './';
+    }
+
+    // fix URL for new phone numbers
+    if ( !self.queryParams.hasOwnProperty('phonenumberid') || !Mura.isUUID(self.queryParams.phonenumberid) ) {
+      window.location.hash = 'mcaction=editphone&pid=' + pid + '&phonenumberid=' + phonenumberid;
+    }
+
+    Mura
+      .getBean('personphonenumber')
+      .loadBy('phonenumberid', phonenumberid)
+      .then(
+        function(phone) {
+          // success
+          var phone = phone.getAll()
+              , body = ''
+              , message = '';
+
+          phone.exists = phone.isnew === 0;
+          phone.personid = phone.exists ? phone.personid : pid;
+          phone.label = phone.exists ? 'Update' : 'Add';
+
+          if ( objform.hasOwnProperty('phonenumber') ) {
+            phone.phonenumber = objform.phonenumber;
+          }
+
+          if ( objform.hasOwnProperty('phonetype') ) {
+            phone.phonetype = objform.phonetype;
+          }
+
+          body = muracontacts.templates.editphone(phone:phone);
+          self.renderBody(body, message);
+
+        },
+        function(e) {
+          // fail
+          console.warn('Error getting PHONENUMBER bean');
+          console.log(e);
+        }
+      );
+
   }
 
   , renderBody: function(body) {
