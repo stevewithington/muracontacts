@@ -282,7 +282,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             phone.phonetype = objform.phonetype;
           }
 
-          body = muracontacts.templates.editphone(phone:phone);
+          body = muracontacts.templates.editphone({phone:phone});
           self.renderBody(body, message);
 
         },

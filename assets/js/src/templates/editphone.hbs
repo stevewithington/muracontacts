@@ -1,26 +1,28 @@
 
 <div class="pad">
-  <a class="btn btn-primary" href="./#mcaction=edit&amp;pid={{personid}}">
+  <a class="btn btn-primary" href="./#mcaction=edit&amp;pid={{phone.personid}}">
     <i class="fa fa-arrow-left"></i>
   </a>
 
   <!--- Delete --->
-  <form class="muracontacts-formlink">
-    <input type="hidden" name="mcaction" value="deletephone">
-    <input type="hidden" name="phoneid" value="{{phoneid}}">
-    <button type="submit" class="btn btn-danger btn-delete">
-      <i class="fa fa-trash"></i>
-    </button>
-  </form>
+  {{#if phoneexists}}
+    <form class="muracontacts-formlink">
+      <input type="hidden" name="mcaction" value="deletephone">
+      <input type="hidden" name="phoneid" value="{{phone.phoneid}}">
+      <button type="submit" class="btn btn-danger btn-delete">
+        <i class="fa fa-trash"></i>
+      </button>
+    </form>
+  {{/if}}
 </div>
 
-<h3>{{fullname}}</h3>
-<h4>{{label}} Phone</h4>
+{{!-- <h3>{{fullname}}</h3> --}}
+<h4>{{phone.label}} Phone</h4>
 
 <form method="post" class="muracontacts-form">
   <div class="form-group">
     <label for="phonenumber">Phone Number</label>
-    <input type="text" class="form-control" name="phonenumber" value="{{phonenumber}}">
+    <input type="text" class="form-control" name="phonenumber" value="{{phone.phonenumber}}">
   </div>
   <div class="form-group">
     <label for="phonetype">Phone Type</label>
@@ -37,12 +39,12 @@
   </div>
 
   <input type="hidden" name="mcaction" value="editphone">
-  <input type="hidden" name="personid" value="{{personid}}">
-  <input type="hidden" name="phoneid" value="{{phoneid}}">
+  <input type="hidden" name="personid" value="{{phone.personid}}">
+  <input type="hidden" name="phoneid" value="{{phone.phoneid}}">
   <input type="hidden" name="issubmitted" value="true">
 
   <button type="submit" class="btn btn-primary">
     <i class="fa fa-floppy-o"></i>
   </button>
-  <a class="btn btn-default" href="./#mcaction=edit&amp;pid={{personid}}"><i class="fa fa-ban"></i></a>
+  <a class="btn btn-default" href="./#mcaction=edit&amp;pid={{phone.personid}}"><i class="fa fa-ban"></i></a>
 </form>
