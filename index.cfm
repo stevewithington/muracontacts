@@ -70,7 +70,7 @@
 <script>
   // mura.js
   Mura(function() {
-    Mura.loader().loadcss(Mura.themepath + '/display_objects/MuraContacts/assets/css/muracontacts.min.css');
-    Mura.loader().loadjs(Mura.themepath + '/display_objects/MuraContacts/assets/js/dist/muracontacts.min.js');
+    Mura.loader().loadcss(Mura.themepath + '/display_objects/muracontacts/assets/css/muracontacts.min.css');
+    Mura.loader().loadjs(Mura.themepath + '/display_objects/muracontacts/assets/js/dist/muracontacts.min.js');
   });
 </script>
