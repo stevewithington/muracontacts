@@ -77,18 +77,23 @@ component
 				// verify the user is deleting their own contact, and not someone else's
 				return arguments.m.currentUser('userid') == this.get('userid');
 			}
-			// public any function allowRead(m) {
-			// 	return arguments.m.currentUser('userid') == this.get('userid');
-			// }
-			// public any function allowSave(m) {
-			// 	return arguments.m.currentUser('userid') == this.get('userid');
-			// }
-			// public any function allowQueryParams(params, m) {
-			// 	if ( StructKeyExists(arguments.params, getPrimaryKey()) ) {
-			// 		this.loadBy('#getPrimaryKey()#'=arguments.params[getPrimaryKey()]);
-			// 	}
-			// 	return arguments.m.currentUser('userid') == this.get('userid');
-			// }
+
+			public any function allowSave(m) {
+				return this.exists() ? arguments.m.currentUser('userid') == this.get('userid') : true;
+			}
+
+			public any function allowRead(m) {
+				return this.exists() ? arguments.m.currentUser('userid') == this.get('userid') : true;
+			}
+
+			public any function allowQueryParams(params, m) {
+				if ( StructKeyExists(arguments.params, getPrimaryKey()) ) {
+					var args = {'#getPrimaryKey()#'=arguments.params[getPrimaryKey()]};
+					this.loadBy(argumentCollection=args);
+				}
+
+				return this.exists() ? arguments.m.currentUser('userid') == this.get('userid') : true;
+			}
 		// @END JSON API Restrictions
 
 		// Custom Methods

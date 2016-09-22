@@ -57,7 +57,7 @@ this["muracontacts"]["templates"]["body"] = window.mura.Handlebars.template({"1"
   return "<div class=\"muracontacts-wrapper\">\n\n  <!-- Heading -->\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.userfirstname : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n  <!-- Messaging -->\n"
-    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.message : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.hasmessage : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n  <!-- Body -->\n"
     + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.body : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n</div>\n<!-- @end muracontacts-wrapper -->\n";
@@ -134,9 +134,10 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
 
   // Mura invokes this method by default
   render: function() {
-    var self = this;
-
-    self.main(); // Delegating to main()
+    //this.container = Mura(this.context.targetEl); // doesn't work yet
+    this.container = jQuery(Mura(this.context.targetEl).node); // works
+    console.log(this.container);
+    this.main(); // Delegating to main()
   }
 
   , main: function() {
@@ -149,7 +150,7 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
 
         if ( currentUser.get('isnew') === 1 ) {
           // User not logged in
-          Mura(self.context.targetEl)
+          self.container
             .html(muracontacts.templates.body({body:muracontacts.templates.loggedout()}));
         } else {
           // User IS logged in
@@ -158,14 +159,14 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
               self.handleHash();
             });
 
-          jQuery('div[data-object="muracontacts"]')
+          self.container
             .on('click', '.muracontacts-wrapper .btn-delete', function(e) {
               return confirm('Are you sure?')
                 ? true
                 : e.preventDefault();
             });
 
-          jQuery('div[data-object="muracontacts"]')
+          self.container
             .on('submit', '.muracontacts-wrapper form', function(e) {
               e.preventDefault();
               self.handleForm(Mura.formToObject(e.target));
@@ -177,8 +178,9 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       });
   }
 
-  , handleForm: function(objForm) {
-    console.log(objForm);
+  , handleForm: function(objform) {
+    var mcaction = objform.mcaction === undefined ? 'list' : objform.mcaction;
+    this.routeAction(mcaction, '', objform);
   }
 
   , handleHash: function() {
@@ -186,27 +188,52 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
 
     self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
     self.queryParams.mcaction = self.queryParams.mcaction || 'list';
+    self.routeAction(self.queryParams.mcaction);
+  }
 
-    switch(self.queryParams.mcaction) {
+  , routeAction: function(mcaction, objform) {
+    var self = this
+        , mcaction = mcaction === undefined ? 'list' : mcaction
+        , objform = objform === undefined ? {} : objform;
+
+    switch(mcaction) {
       case 'edit':
-        self.renderEditContact();
+        self.renderEditContact(objform);
         break;
       case 'editphone':
-        self.renderEditPhone();
+        self.renderEditPhone(objform);
         break;
       case 'delete':
-        self.handleDelete();
+        self.handleDelete(objform);
         break;
       default: // list or anything else that isn't accounted for
-        self.renderList();
+        self.renderList(objform);
     }
   }
 
-  , handleDelete: function() {
+  , setMessage: function(message) {
+    this.message = message;
+  }
+
+  , getMessage: function() {
+    return this.message === undefined ? {} : this.message;
+  }
+
+  , handleDelete: function(objform) {
     var self = this;
 
-    self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
-    self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
+    //console.log(objform);
+    self.setMessage({text:'Deleted!', type:'success'});
+    self.renderList();
+
+
+
+
+    // self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
+    // self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
+
+    //self.renderList({text:'Deleted!', type:'success'});
+    //window.location.hash = 'mcaction=list';
 
     // Mura
     //   .getEntity('person')
@@ -233,10 +260,15 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
     //   });
   }
 
-  , renderList: function(message) {
+  , renderList: function() {
     var self = this
         , loggedInUser = self.getLoggedInUser()
-        , userid = loggedInUser.userid;
+        , userid = loggedInUser.userid
+        , windowHash = window.location.hash.replace(/^#/, '');
+
+    if ( windowHash !== 'mcaction=list') {
+      window.location.hash = 'mcaction=list';
+    }
 
     Mura
       .getFeed('person')
@@ -246,7 +278,7 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       .getQuery()
       .then(function(people) {
           // success
-          self.renderBody(muracontacts.templates.contactlisttable({people:people.get('items')}), message); // try people.getAll().items;
+          self.renderBody(muracontacts.templates.contactlisttable({people:people.get('items')})); // try people.getAll().items;
         },function(e) {
           // error
           console.warn('Error getting PERSON feed');
@@ -308,9 +340,11 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
     self.renderBody(muracontacts.templates.editphone({body:body}));
   }
 
-  , renderBody: function(body, message) {
+  , renderBody: function(body) {
     var self = this
         , body = body === undefined ? '' : body
+        , message = self.getMessage()
+        , hasmessage = Object.keys(message).length !== 0
         , loggedInUser = self.getLoggedInUser();
 
     Mura
@@ -318,39 +352,21 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       .loadcss(self.getDisplayObjectPath() + '/assets/css/muracontacts.min.css');
 
     // Wraps body with muracontacts-wrapper div
-    Mura(self.context.targetEl)
+    self.container
       .html(muracontacts.templates.body({
         body: body
+        , hasmessage: hasmessage
         , message: message
         , userfirstname: loggedInUser.fname
       })
     );
 
-    // Would rather use a jQuery-esque method in main() for these ...
-      // Mura(self.context.targetEl)
-      //   .find('.muracontacts-wrapper .btn-delete')
-      //   .on('click', function(e) {
-      //     return confirm('Are you sure?')
-      //       ? true
-      //       : e.preventDefault();
-      //   });
-      //
-      // Mura(self.context.targetEl)
-      //   .find('.muracontacts-wrapper form')
-      //   .on('submit', function(e) {
-      //     e.preventDefault();
-      //     self.handleForm(Mura.formToObject(e.target));
-      //     return false;
-      //   });
-
-  }
-
-  // Mura automatically triggers this method for us
-  ,registerHelpers: function() {
-    var self = this;
-
-    // Example of how to register a helper
-    //Mura.Handlebars.registerHelper('helpername', function(arg1, arg2) {});
+    if ( hasmessage ) {
+      setTimeout(function() {
+        $('.muracontacts-alert').fadeOut('slow');
+        self.setMessage();
+      }, 1000);
+    }
   }
 
   , setLoggedInUser: function(loggedInUser) {
@@ -364,6 +380,14 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
   , getDisplayObjectPath: function() {
     // Would need to modify if dropping into a plugin
     return Mura.themepath + '/display_objects/muracontacts';
+  }
+
+  // Mura automatically triggers this method for us
+  ,registerHelpers: function() {
+    var self = this;
+
+    // Example of how to register a helper
+    //Mura.Handlebars.registerHelper('helpername', function(arg1, arg2) {});
   }
 
 });
