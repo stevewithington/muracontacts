@@ -127,6 +127,20 @@ this["muracontacts"]["templates"]["editphone"] = window.mura.Handlebars.template
     return "<h3>Edit Phone</h3>\n";
 },"useData":true});
 
+this["muracontacts"]["templates"]["errormessages"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "    <li>"
+    + ((stack1 = container.lambda(depth0, depth0)) != null ? stack1 : "")
+    + "</li>\n";
+},"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var stack1;
+
+  return "<h4>Please review:</h4>\n<ul>\n"
+    + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.errors : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + "</ul>\n";
+},"useData":true});
+
 this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"muracontacts-heading\">\n  <h2>MuraContacts</h2>\n</div>\n<p class=\"alert alert-danger\">You must be <a href=\"./?display=login\">logged in</a> to use <strong>MuraContacts</strong></p>\n";
 },"useData":true});;Mura.DisplayObject.muracontacts = Mura.UI.extend({
@@ -241,8 +255,9 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
             },
             function(obj) {
               // fail
-              var text = exists ? 'updating' : 'adding';
-              self.setMessage({text:'Error ' + text + ' contact!', type:'danger'});
+              var errormessage = muracontacts.templates.errormessages({errors:obj.get('errors')});
+
+              self.setMessage({text:errormessage, type:'danger'});
               self.renderEditContact(objform);
             }
           );
@@ -301,16 +316,18 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
     var self = this
         , body = ''
         , message = ''
-        , pid = objform === undefined || !objform.hasOwnProperty('personid') ? Mura.createUUID() : objform.personid;
+        , pid = objform === undefined || !objform.hasOwnProperty('personid') || !Mura.isUUID(objform.personid)
+            ? Mura.createUUID()
+            : objform.personid;
 
     self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
 
     if ( Mura.isEmptyObject(objform) ) {
-      pid = self.queryParams.pid !== undefined && self.queryParams.pid.length > 0 ? self.queryParams.pid : pid;
+      pid = self.queryParams.pid !== undefined && Mura.isUUID(self.queryParams.pid) ? self.queryParams.pid : pid;
     }
 
-    // fix URL
-    if ( !self.queryParams.hasOwnProperty('pid') || self.queryParams.pid.length === 0 ) {
+    // fix URL for new contacts (or anyone messing with the pid in the URL)
+    if ( !self.queryParams.hasOwnProperty('pid') || !Mura.isUUID(self.queryParams.pid) ) {
       window.location.hash = 'mcaction=edit&pid=' + pid;
     }
 
@@ -392,7 +409,7 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       setTimeout(function() {
         $('.muracontacts-alert').fadeOut('slow');
         self.setMessage();
-      }, 1200);
+      }, 2000);
     }
   }
 

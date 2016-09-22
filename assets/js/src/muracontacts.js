@@ -110,8 +110,9 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             },
             function(obj) {
               // fail
-              var text = exists ? 'updating' : 'adding';
-              self.setMessage({text:'Error ' + text + ' contact!', type:'danger'});
+              var errormessage = muracontacts.templates.errormessages({errors:obj.get('errors')});
+
+              self.setMessage({text:errormessage, type:'danger'});
               self.renderEditContact(objform);
             }
           );
@@ -170,16 +171,18 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
     var self = this
         , body = ''
         , message = ''
-        , pid = objform === undefined || !objform.hasOwnProperty('personid') ? Mura.createUUID() : objform.personid;
+        , pid = objform === undefined || !objform.hasOwnProperty('personid') || !Mura.isUUID(objform.personid)
+            ? Mura.createUUID()
+            : objform.personid;
 
     self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
 
     if ( Mura.isEmptyObject(objform) ) {
-      pid = self.queryParams.pid !== undefined && self.queryParams.pid.length > 0 ? self.queryParams.pid : pid;
+      pid = self.queryParams.pid !== undefined && Mura.isUUID(self.queryParams.pid) ? self.queryParams.pid : pid;
     }
 
-    // fix URL
-    if ( !self.queryParams.hasOwnProperty('pid') || self.queryParams.pid.length === 0 ) {
+    // fix URL for new contacts (or anyone messing with the pid in the URL)
+    if ( !self.queryParams.hasOwnProperty('pid') || !Mura.isUUID(self.queryParams.pid) ) {
       window.location.hash = 'mcaction=edit&pid=' + pid;
     }
 
@@ -261,7 +264,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       setTimeout(function() {
         $('.muracontacts-alert').fadeOut('slow');
         self.setMessage();
-      }, 1200);
+      }, 2000);
     }
   }
 
