@@ -179,7 +179,7 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
 
   , handleForm: function(objform) {
     var mcaction = objform.mcaction === undefined ? 'list' : objform.mcaction;
-    this.routeAction(mcaction, '', objform);
+    this.routeAction(mcaction, objform);
   }
 
   , handleHash: function() {
@@ -203,10 +203,10 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
         self.renderEditPhone(objform);
         break;
       case 'delete':
-        self.handleDelete(objform);
+        self.handleDeleteContact(objform);
         break;
       default: // list or anything else that isn't accounted for
-        self.renderList(objform);
+        self.renderList();
     }
   }
 
@@ -218,45 +218,27 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
     return this.message === undefined ? {} : this.message;
   }
 
-  , handleDelete: function(objform) {
+  , handleDeleteContact: function(objform) {
     var self = this;
 
-    //console.log(objform);
-    self.setMessage({text:'Deleted!', type:'success'});
-    self.renderList();
-
-
-
-
-    // self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
-    // self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
-
-    //self.renderList({text:'Deleted!', type:'success'});
-    //window.location.hash = 'mcaction=list';
-
-    // Mura
-    //   .getEntity('person')
-    //   .loadBy('personid', self.queryParams.pid)
-    //   .then(function(person) {
-    //     person
-    //       .delete()
-    //       .then(
-    //         function(obj) {
-    //           console.log(obj);
-    //           // success
-    //           //window.location.hash = 'mcaction=list';
-    //
-    //           //self.renderBody('Deleted!');
-    //           self.renderList({text:'Deleted!', type:'success'});
-    //
-    //         },
-    //         function(obj) {
-    //           console.log(obj);
-    //           // fail
-    //           self.renderBody('Not deleted.');
-    //         }
-    //       );
-    //   });
+    Mura
+      .getEntity('person')
+      .loadBy('personid', objform.pid)
+      .then(function(person) {
+        person
+          .delete()
+          .then(
+            function(obj) {
+              // success
+              self.setMessage({text:'Deleted!', type:'success'});
+              self.renderList();
+            },
+            function(obj) {
+              // fail
+              self.setMessage({text:'Error deleting!', type:'danger'});
+            }
+          );
+      });
   }
 
   , renderList: function() {
@@ -357,14 +339,13 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
         , hasmessage: hasmessage
         , message: message
         , userfirstname: loggedInUser.fname
-      })
-    );
+      }));
 
     if ( hasmessage ) {
       setTimeout(function() {
         $('.muracontacts-alert').fadeOut('slow');
         self.setMessage();
-      }, 1000);
+      }, 1200);
     }
   }
 
