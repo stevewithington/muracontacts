@@ -3,7 +3,16 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
 
   // Mura invokes this method by default
   render: function() {
-    this.main(); // Delegating to main()
+    var self = this;
+
+    Mura(document)
+      .on('submit', 'form.muracontacts-form', function(e) {
+        e.preventDefault();
+        self.handleForm(Mura.formToObject(e.target));
+        return false;
+      });
+
+    self.main(); // Delegating to main()
   }
 
   , main: function() {
@@ -12,7 +21,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
     Mura
       .getCurrentUser()
       .then(function(currentUser) {
-        self.setLoggedInUser(currentUser.properties);
+        self.setLoggedInUser(currentUser.getAll());
 
         if ( currentUser.get('isnew') === 1 ) {
           // User not logged in
@@ -20,7 +29,6 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             .html(muracontacts.templates.body({body:muracontacts.templates.loggedout()}));
         } else {
           // User IS logged in
-
           Mura(window)
             .on('hashchange', function(e) {
               self.handleHash();
@@ -31,8 +39,13 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       });
   }
 
+  , handleForm: function(form) {
+    console.log(form);
+  }
+
   , handleHash: function() {
     var self = this;
+
     self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
     self.queryParams.mcaction = self.queryParams.mcaction || 'list';
 
@@ -54,7 +67,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
   , handleDelete: function() {
     var self = this;
 
-    self.queryParams = Mura.getQueryStringParams();
+    self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
     self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
 
     Mura
@@ -67,7 +80,11 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             function(obj) {
               console.log(obj);
               // success
-              self.renderBody('Deleted!');
+              //window.location.hash = 'mcaction=list';
+
+              //self.renderBody('Deleted!');
+              self.renderList({text:'Deleted!', type:'success'});
+
             },
             function(obj) {
               console.log(obj);
@@ -78,7 +95,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       });
   }
 
-  , renderList: function() {
+  , renderList: function(message) {
     var self = this
         , loggedInUser = self.getLoggedInUser()
         , userid = loggedInUser.userid;
@@ -91,7 +108,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       .getQuery()
       .then(function(people) {
           // success
-          self.renderBody(muracontacts.templates.contactlisttable({people:people.get('items')}));
+          self.renderBody(muracontacts.templates.contactlisttable({people:people.get('items')}), message); // try people.getAll().items;
         },function(e) {
           // error
           console.warn('Error getting PERSON feed');
@@ -175,7 +192,11 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
     Mura(self.context.targetEl)
       .find('.btn-delete')
       .on('click', function(e) {
-        return confirm('Are you sure?') ? true : e.preventDefault();
+        e.preventDefault();
+
+        return confirm('Are you sure?')
+          ? self.handleDelete()
+          : e.preventDefault();
       });
   }
 

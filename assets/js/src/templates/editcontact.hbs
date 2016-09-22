@@ -5,7 +5,7 @@
 
   <!-- Delete -->
   {{#if contact.exists}}
-    <form method="post" class="muracontacts-formlink" action="./#mcation=list">
+    <form method="post" class="muracontacts-form">
       <input type="hidden" name="mcaction" value="delete">
       <input type="hidden" name="pid" value="{{contact.personid}}">
       <button type="submit" class="btn btn-danger btn-delete">
@@ -18,7 +18,7 @@
 
 <h3>{{contact.label}} Contact</h3>
 
-<form method="post" class="pad">
+<form method="post" class="muracontacts-form pad">
   <div class="form-group">
     <label for="namefirst">First Name</label>
     <input type="text" class="form-control" name="namefirst" value="{{contact.namefirst}}">
@@ -31,9 +31,6 @@
   <input type="hidden" name="mcaction" value="edit">
   <input type="hidden" name="pid" value="{{contact.personid}}">
   <input type="hidden" name="issubmitted" value="true">
-
-  <!-- Cross-Site Request Forgery (CSRF) Tokens -->
-
 
   <button type="submit" class="btn btn-primary">
     <i class="fa fa-floppy-o"></i>

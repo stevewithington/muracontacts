@@ -10,9 +10,9 @@ window.mura.Handlebars.registerPartial("contactlistitem", window.mura.Handlebars
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.fullname : stack1), depth0))
     + "\n    </a>\n  </td>\n\n  <td class=\"right\">\n    <!-- Edit -->\n    <a class=\"btn btn-success\" href=\"./#mcaction=edit&amp;pid="
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.personid : stack1), depth0))
-    + "\">\n      <i class=\"fa fa-pencil\"></i>\n    </a>\n\n    <!-- Delete -->\n    <form class=\"muracontacts-formlink\">\n      <input type=\"hidden\" name=\"mcaction\" value=\"delete\">\n      <input type=\"hidden\" name=\"pid\" value=\""
+    + "\">\n      <i class=\"fa fa-pencil\"></i>\n    </a>\n\n    <!-- Delete -->\n    <form method=\"post\" class=\"muracontacts-form muracontacts-formlink\">\n      <input type=\"hidden\" name=\"mcaction\" value=\"delete\">\n      <input type=\"hidden\" name=\"pid\" value=\""
     + alias2(alias1(((stack1 = (depth0 != null ? depth0.properties : depth0)) != null ? stack1.personid : stack1), depth0))
-    + "\">\n      <button type=\"submit\" class=\"btn btn-danger btn-delete\">\n        <i class=\"fa fa-trash\"></i>\n      </button>\n    </form>\n  </td>\n\n</tr>\n";
+    + "\">\n      <button type=\"submit\" class=\"btn btn-danger btn-delete btn-delete-contact\">\n        <i class=\"fa fa-trash\"></i>\n      </button>\n    </form>\n  </td>\n\n</tr>\n";
 },"useData":true}));
 
 window.mura.Handlebars.registerPartial("phonelistitem", window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -84,7 +84,7 @@ this["muracontacts"]["templates"]["contactlisttable"] = window.mura.Handlebars.t
 this["muracontacts"]["templates"]["editcontact"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "    <form method=\"post\" class=\"muracontacts-formlink\" action=\"./#mcation=list\">\n      <input type=\"hidden\" name=\"mcaction\" value=\"delete\">\n      <input type=\"hidden\" name=\"pid\" value=\""
+  return "    <form method=\"post\" class=\"muracontacts-form\">\n      <input type=\"hidden\" name=\"mcaction\" value=\"delete\">\n      <input type=\"hidden\" name=\"pid\" value=\""
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.personid : stack1), depth0))
     + "\">\n      <button type=\"submit\" class=\"btn btn-danger btn-delete\">\n        <i class=\"fa fa-trash\"></i>\n      </button>\n    </form>\n";
 },"3":function(container,depth0,helpers,partials,data) {
@@ -112,13 +112,13 @@ this["muracontacts"]["templates"]["editcontact"] = window.mura.Handlebars.templa
     + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.exists : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "\n</div>\n\n<h3>"
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.label : stack1), depth0))
-    + " Contact</h3>\n\n<form method=\"post\" class=\"pad\">\n  <div class=\"form-group\">\n    <label for=\"namefirst\">First Name</label>\n    <input type=\"text\" class=\"form-control\" name=\"namefirst\" value=\""
+    + " Contact</h3>\n\n<form method=\"post\" class=\"muracontacts-form pad\">\n  <div class=\"form-group\">\n    <label for=\"namefirst\">First Name</label>\n    <input type=\"text\" class=\"form-control\" name=\"namefirst\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.namefirst : stack1), depth0))
     + "\">\n  </div>\n  <div class=\"form-group\">\n    <label for=\"namelast\">Last Name</label>\n    <input type=\"text\" class=\"form-control\" name=\"namelast\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.namelast : stack1), depth0))
     + "\">\n  </div>\n\n  <input type=\"hidden\" name=\"mcaction\" value=\"edit\">\n  <input type=\"hidden\" name=\"pid\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.personid : stack1), depth0))
-    + "\">\n  <input type=\"hidden\" name=\"issubmitted\" value=\"true\">\n\n  <!-- Cross-Site Request Forgery (CSRF) Tokens -->\n\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=list\"><i class=\"fa fa-ban\"></i></a>\n</form>\n\n<!-- Phone Number(s) -->\n"
+    + "\">\n  <input type=\"hidden\" name=\"issubmitted\" value=\"true\">\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=list\"><i class=\"fa fa-ban\"></i></a>\n</form>\n\n<!-- Phone Number(s) -->\n"
     + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.exists : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "<!-- @End Phone Number(s) -->\n";
 },"usePartial":true,"useData":true});

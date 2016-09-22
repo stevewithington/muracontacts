@@ -1,4 +1,4 @@
 <cfscript>
   objectparams.render='client';
-  objectparams.async=true;
+  objectparams.async=false;
 </cfscript>
