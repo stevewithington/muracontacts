@@ -5,15 +5,14 @@
 
   <!-- Delete -->
   {{#if contact.exists}}
-    <form method="post" class="muracontacts-form">
+    <form method="post" class="muracontacts-form muracontacts-formlink">
       <input type="hidden" name="mcaction" value="delete">
       <input type="hidden" name="pid" value="{{contact.personid}}">
-      <button type="submit" class="btn btn-danger btn-delete">
+      <button type="submit" class="btn btn-danger btn-delete btn-delete-contact">
         <i class="fa fa-trash"></i>
       </button>
     </form>
   {{/if}}
-
 </div>
 
 <h3>{{contact.label}} Contact</h3>

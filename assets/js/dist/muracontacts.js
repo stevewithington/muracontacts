@@ -84,9 +84,9 @@ this["muracontacts"]["templates"]["contactlisttable"] = window.mura.Handlebars.t
 this["muracontacts"]["templates"]["editcontact"] = window.mura.Handlebars.template({"1":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "    <form method=\"post\" class=\"muracontacts-form\">\n      <input type=\"hidden\" name=\"mcaction\" value=\"delete\">\n      <input type=\"hidden\" name=\"pid\" value=\""
+  return "    <form method=\"post\" class=\"muracontacts-form muracontacts-formlink\">\n      <input type=\"hidden\" name=\"mcaction\" value=\"delete\">\n      <input type=\"hidden\" name=\"pid\" value=\""
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.personid : stack1), depth0))
-    + "\">\n      <button type=\"submit\" class=\"btn btn-danger btn-delete\">\n        <i class=\"fa fa-trash\"></i>\n      </button>\n    </form>\n";
+    + "\">\n      <button type=\"submit\" class=\"btn btn-danger btn-delete btn-delete-contact\">\n        <i class=\"fa fa-trash\"></i>\n      </button>\n    </form>\n";
 },"3":function(container,depth0,helpers,partials,data) {
     var stack1;
 
@@ -110,7 +110,7 @@ this["muracontacts"]["templates"]["editcontact"] = window.mura.Handlebars.templa
 
   return "<div class=\"pad\">\n  <a class=\"btn btn-primary\" href=\"./#mcaction=list\">\n    <i class=\"fa fa-arrow-left\"></i>\n  </a>\n\n  <!-- Delete -->\n"
     + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.exists : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "\n</div>\n\n<h3>"
+    + "</div>\n\n<h3>"
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.label : stack1), depth0))
     + " Contact</h3>\n\n<form method=\"post\" class=\"muracontacts-form pad\">\n  <div class=\"form-group\">\n    <label for=\"namefirst\">First Name</label>\n    <input type=\"text\" class=\"form-control\" name=\"namefirst\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.namefirst : stack1), depth0))
@@ -136,13 +136,6 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
   render: function() {
     var self = this;
 
-    Mura(document)
-      .on('submit', 'form.muracontacts-form', function(e) {
-        e.preventDefault();
-        self.handleForm(Mura.formToObject(e.target));
-        return false;
-      });
-
     self.main(); // Delegating to main()
   }
 
@@ -165,13 +158,27 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
               self.handleHash();
             });
 
+          jQuery('div[data-object="muracontacts"]')
+            .on('click', '.muracontacts-wrapper .btn-delete', function(e) {
+              return confirm('Are you sure?')
+                ? true
+                : e.preventDefault();
+            });
+
+          jQuery('div[data-object="muracontacts"]')
+            .on('submit', '.muracontacts-wrapper form', function(e) {
+              e.preventDefault();
+              self.handleForm(Mura.formToObject(e.target));
+              return false;
+            });
+
           self.handleHash();
         }
       });
   }
 
-  , handleForm: function(form) {
-    console.log(form);
+  , handleForm: function(objForm) {
+    console.log(objForm);
   }
 
   , handleHash: function() {
@@ -201,29 +208,29 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
     self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
     self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
 
-    Mura
-      .getEntity('person')
-      .loadBy('personid', self.queryParams.pid)
-      .then(function(person) {
-        person
-          .delete()
-          .then(
-            function(obj) {
-              console.log(obj);
-              // success
-              //window.location.hash = 'mcaction=list';
-
-              //self.renderBody('Deleted!');
-              self.renderList({text:'Deleted!', type:'success'});
-
-            },
-            function(obj) {
-              console.log(obj);
-              // fail
-              self.renderBody('Not deleted.');
-            }
-          );
-      });
+    // Mura
+    //   .getEntity('person')
+    //   .loadBy('personid', self.queryParams.pid)
+    //   .then(function(person) {
+    //     person
+    //       .delete()
+    //       .then(
+    //         function(obj) {
+    //           console.log(obj);
+    //           // success
+    //           //window.location.hash = 'mcaction=list';
+    //
+    //           //self.renderBody('Deleted!');
+    //           self.renderList({text:'Deleted!', type:'success'});
+    //
+    //         },
+    //         function(obj) {
+    //           console.log(obj);
+    //           // fail
+    //           self.renderBody('Not deleted.');
+    //         }
+    //       );
+    //   });
   }
 
   , renderList: function(message) {
@@ -319,16 +326,23 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       })
     );
 
-    // Confirm delete actions
-    Mura(self.context.targetEl)
-      .find('.btn-delete')
-      .on('click', function(e) {
-        e.preventDefault();
+    // Would rather use a jQuery-esque method in main() for these ...
+      // Mura(self.context.targetEl)
+      //   .find('.muracontacts-wrapper .btn-delete')
+      //   .on('click', function(e) {
+      //     return confirm('Are you sure?')
+      //       ? true
+      //       : e.preventDefault();
+      //   });
+      //
+      // Mura(self.context.targetEl)
+      //   .find('.muracontacts-wrapper form')
+      //   .on('submit', function(e) {
+      //     e.preventDefault();
+      //     self.handleForm(Mura.formToObject(e.target));
+      //     return false;
+      //   });
 
-        return confirm('Are you sure?')
-          ? self.handleDelete()
-          : e.preventDefault();
-      });
   }
 
   // Mura automatically triggers this method for us
