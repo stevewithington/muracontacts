@@ -116,9 +116,9 @@ this["muracontacts"]["templates"]["editcontact"] = window.mura.Handlebars.templa
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.namefirst : stack1), depth0))
     + "\">\n  </div>\n  <div class=\"form-group\">\n    <label for=\"namelast\">Last Name</label>\n    <input type=\"text\" class=\"form-control\" name=\"namelast\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.namelast : stack1), depth0))
-    + "\">\n  </div>\n\n  <input type=\"hidden\" name=\"mcaction\" value=\"edit\">\n  <input type=\"hidden\" name=\"pid\" value=\""
+    + "\">\n  </div>\n\n  <input type=\"hidden\" name=\"mcaction\" value=\"savecontact\">\n  <input type=\"hidden\" name=\"personid\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.personid : stack1), depth0))
-    + "\">\n  <input type=\"hidden\" name=\"issubmitted\" value=\"true\">\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=list\"><i class=\"fa fa-ban\"></i></a>\n</form>\n\n<!-- Phone Number(s) -->\n"
+    + "\">\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=list\"><i class=\"fa fa-ban\"></i></a>\n</form>\n\n<!-- Phone Number(s) -->\n"
     + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.exists : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "<!-- @End Phone Number(s) -->\n";
 },"usePartial":true,"useData":true});

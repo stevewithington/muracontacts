@@ -116,9 +116,9 @@ this["muracontacts"]["templates"]["editcontact"] = window.mura.Handlebars.templa
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.namefirst : stack1), depth0))
     + "\">\n  </div>\n  <div class=\"form-group\">\n    <label for=\"namelast\">Last Name</label>\n    <input type=\"text\" class=\"form-control\" name=\"namelast\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.namelast : stack1), depth0))
-    + "\">\n  </div>\n\n  <input type=\"hidden\" name=\"mcaction\" value=\"edit\">\n  <input type=\"hidden\" name=\"pid\" value=\""
+    + "\">\n  </div>\n\n  <input type=\"hidden\" name=\"mcaction\" value=\"savecontact\">\n  <input type=\"hidden\" name=\"personid\" value=\""
     + alias3(alias2(((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.personid : stack1), depth0))
-    + "\">\n  <input type=\"hidden\" name=\"issubmitted\" value=\"true\">\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=list\"><i class=\"fa fa-ban\"></i></a>\n</form>\n\n<!-- Phone Number(s) -->\n"
+    + "\">\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=list\"><i class=\"fa fa-ban\"></i></a>\n</form>\n\n<!-- Phone Number(s) -->\n"
     + ((stack1 = helpers["if"].call(alias1,((stack1 = (depth0 != null ? depth0.contact : depth0)) != null ? stack1.exists : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "<!-- @End Phone Number(s) -->\n";
 },"usePartial":true,"useData":true});
@@ -177,6 +177,32 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       });
   }
 
+  , routeAction: function(mcaction, objform) {
+    var self = this
+        , mcaction = mcaction === undefined ? 'list' : mcaction
+        , objform = objform === undefined ? {} : objform;
+
+    switch(mcaction) {
+      case 'edit':
+        self.renderEditContact(objform);
+        break;
+      case 'editphone':
+        self.renderEditPhone(objform);
+        break;
+      case 'savecontact':
+        self.handleSaveContact(objform);
+        break;
+      case 'savephone':
+        self.handleSavePhone(objform);
+        break;
+      case 'delete':
+        self.handleDeleteContact(objform);
+        break;
+      default: // list or anything else that isn't accounted for
+        self.renderList();
+    }
+  }
+
   , handleForm: function(objform) {
     var mcaction = objform.mcaction === undefined ? 'list' : objform.mcaction;
     this.routeAction(mcaction, objform);
@@ -190,32 +216,37 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
     self.routeAction(self.queryParams.mcaction);
   }
 
-  , routeAction: function(mcaction, objform) {
-    var self = this
-        , mcaction = mcaction === undefined ? 'list' : mcaction
-        , objform = objform === undefined ? {} : objform;
+  , handleSaveContact: function(objform) {
+    var self = this;
 
-    switch(mcaction) {
-      case 'edit':
-        self.renderEditContact(objform);
-        break;
-      case 'editphone':
-        self.renderEditPhone(objform);
-        break;
-      case 'delete':
-        self.handleDeleteContact(objform);
-        break;
-      default: // list or anything else that isn't accounted for
-        self.renderList();
-    }
-  }
+    Mura
+      .getEntity('person')
+      .loadBy('personid', objform.personid)
+      .then(function(person) {
+        var exists = person.get('isnew') === 0 ? true : false;
 
-  , setMessage: function(message) {
-    this.message = message;
-  }
+        if ( !exists ) {
+          objform.userid = self.getLoggedInUser().userid;
+        }
 
-  , getMessage: function() {
-    return this.message === undefined ? {} : this.message;
+        person
+          .set(objform)
+          .save()
+          .then(
+            function(obj) {
+              // success
+              var text = exists ? 'Updated!' : 'Added!';
+              self.setMessage({text:text, type:'success'});
+              self.renderEditContact(objform);
+            },
+            function(obj) {
+              // fail
+              var text = exists ? 'updating' : 'adding';
+              self.setMessage({text:'Error ' + text + ' contact!', type:'danger'});
+              self.renderEditContact(objform);
+            }
+          );
+      });
   }
 
   , handleDeleteContact: function(objform) {
@@ -244,10 +275,9 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
   , renderList: function() {
     var self = this
         , loggedInUser = self.getLoggedInUser()
-        , userid = loggedInUser.userid
-        , windowHash = window.location.hash.replace(/^#/, '');
+        , userid = loggedInUser.userid;
 
-    if ( windowHash !== 'mcaction=list') {
+    if ( window.location.hash.replace(/^#/, '') !== 'mcaction=list') {
       window.location.hash = 'mcaction=list';
     }
 
@@ -267,27 +297,44 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
         });
   }
 
-  , renderEditContact: function() {
+  , renderEditContact: function(objform) {
     var self = this
         , body = ''
-        , message = '';
+        , message = ''
+        , pid = objform === undefined || !objform.hasOwnProperty('personid') ? Mura.createUUID() : objform.personid;
 
     self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
-    self.queryParams.pid = self.queryParams.pid || Mura.createUUID();
+
+    if ( Mura.isEmptyObject(objform) ) {
+      pid = self.queryParams.pid !== undefined && self.queryParams.pid.length > 0 ? self.queryParams.pid : pid;
+    }
+
+    // fix URL
+    if ( !self.queryParams.hasOwnProperty('pid') || self.queryParams.pid.length === 0 ) {
+      window.location.hash = 'mcaction=edit&pid=' + pid;
+    }
 
     Mura
       .getBean('person')
-      .loadBy('personid', self.queryParams.pid)
+      .loadBy('personid', pid)
       .then(
         function(person) {
           // success
-          var contact = person.properties
+          var contact = person.getAll()
               , body = ''
               , message = '';
 
           contact.exists = contact.isnew === 0;
-          contact.personid = contact.exists ? contact.personid : Mura.createUUID();
+          contact.personid = contact.exists ? contact.personid : pid;
           contact.label = contact.exists ? 'Update' : 'Add';
+
+          if ( objform.hasOwnProperty('namefirst') ) {
+            contact.namefirst = objform.namefirst;
+          }
+
+          if ( objform.hasOwnProperty('namelast') ) {
+            contact.namelast = objform.namelast;
+          }
 
           Mura
             .getFeed('personphonenumber')
@@ -355,6 +402,14 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
 
   , getLoggedInUser: function() {
     return this.loggedInUser;
+  }
+
+  , setMessage: function(message) {
+    this.message = message;
+  }
+
+  , getMessage: function() {
+    return this.message === undefined ? {} : this.message;
   }
 
   , getDisplayObjectPath: function() {
