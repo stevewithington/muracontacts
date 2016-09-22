@@ -1,4 +1,4 @@
-# MuraContacts
+# muracontacts
 
 ## Please Note
 This is intended for Mura CMS (v7+) training purposes only. It should **not** to be used for production purposes.
