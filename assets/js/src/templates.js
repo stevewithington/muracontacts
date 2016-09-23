@@ -130,24 +130,25 @@ this["muracontacts"]["templates"]["editphone"] = window.mura.Handlebars.template
     + container.escapeExpression(container.lambda(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.phoneid : stack1), depth0))
     + "\">\n      <button type=\"submit\" class=\"btn btn-danger btn-delete\">\n        <i class=\"fa fa-trash\"></i>\n      </button>\n    </form>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
-    var stack1, helper, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : {};
+    var stack1, helper, alias1=depth0 != null ? depth0 : {}, alias2=container.escapeExpression, alias3=container.lambda;
 
-  return "\n<div class=\"pad\">\n  <a class=\"btn btn-primary\" href=\"./#mcaction=edit&amp;pid="
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.personid : stack1), depth0))
+  return alias2(helpers.log.call(alias1,(depth0 != null ? depth0.phone : depth0),{"name":"log","hash":{},"data":data}))
+    + "\n<div class=\"pad\">\n  <a class=\"btn btn-primary\" href=\"./#mcaction=edit&amp;pid="
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.personid : stack1), depth0))
     + "\">\n    <i class=\"fa fa-arrow-left\"></i>\n  </a>\n\n  <!--- Delete --->\n"
-    + ((stack1 = helpers["if"].call(alias3,(depth0 != null ? depth0.phoneexists : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    + ((stack1 = helpers["if"].call(alias1,(depth0 != null ? depth0.phoneexists : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "</div>\n\n<h4>"
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.label : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.label : stack1), depth0))
     + " Phone</h4>\n\n<form method=\"post\" class=\"muracontacts-form\">\n  <div class=\"form-group\">\n    <label for=\"phonenumber\">Phone Number</label>\n    <input type=\"text\" class=\"form-control\" name=\"phonenumber\" value=\""
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.phonenumber : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.phonenumber : stack1), depth0))
     + "\">\n  </div>\n  <div class=\"form-group\">\n    <label for=\"phonetype\">Phone Type</label>\n    <select name=\"phonetype\" class=\"form-control\">\n      <option value=\"\">- Select -</option>\n\n      <cfloop array=\"#phonetypes#\" index=\"phonetype\">\n        <option value=\""
-    + alias2(((helper = (helper = helpers.phonetype || (depth0 != null ? depth0.phonetype : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias3,{"name":"phonetype","hash":{},"data":data}) : helper)))
+    + alias2(((helper = (helper = helpers.phonetype || (depth0 != null ? depth0.phonetype : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"phonetype","hash":{},"data":data}) : helper)))
     + "\"<cfif phoneNumberBean.get('phonetype') eq phonetype> selected=\"selected\"</cfif>>\n          #phonetype#\n        </option>\n      </cfloop>\n\n    </select>\n  </div>\n\n  <input type=\"hidden\" name=\"mcaction\" value=\"editphone\">\n  <input type=\"hidden\" name=\"personid\" value=\""
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.personid : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.personid : stack1), depth0))
     + "\">\n  <input type=\"hidden\" name=\"phoneid\" value=\""
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.phoneid : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.phonenumberid : stack1), depth0))
     + "\">\n  <input type=\"hidden\" name=\"issubmitted\" value=\"true\">\n\n  <button type=\"submit\" class=\"btn btn-primary\">\n    <i class=\"fa fa-floppy-o\"></i>\n  </button>\n  <a class=\"btn btn-default\" href=\"./#mcaction=edit&amp;pid="
-    + alias2(alias1(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.personid : stack1), depth0))
+    + alias2(alias3(((stack1 = (depth0 != null ? depth0.phone : depth0)) != null ? stack1.personid : stack1), depth0))
     + "\"><i class=\"fa fa-ban\"></i></a>\n</form>\n";
 },"useData":true});
 

@@ -190,9 +190,9 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       .getBean('person')
       .loadBy('personid', pid)
       .then(
-        function(person) {
+        function(personbean) {
           // success
-          var contact = person.getAll()
+          var contact = personbean.getAll()
               , body = ''
               , message = '';
 
@@ -264,14 +264,14 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       .getBean('personphonenumber')
       .loadBy('phonenumberid', phonenumberid)
       .then(
-        function(phone) {
+        function(phonebean) {
           // success
-          var phone = phone.getAll()
+          var phone = phonebean.getAll()
               , body = ''
               , message = '';
 
           phone.exists = phone.isnew === 0;
-          phone.personid = phone.exists ? phone.personid : pid;
+          phone.phonenumberid = phone.exists ? phone.phonenumberid : phonenumberid;
           phone.label = phone.exists ? 'Update' : 'Add';
 
           if ( objform.hasOwnProperty('phonenumber') ) {
@@ -284,7 +284,6 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
 
           body = muracontacts.templates.editphone({phone:phone});
           self.renderBody(body, message);
-
         },
         function(e) {
           // fail
