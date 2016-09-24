@@ -20,9 +20,6 @@ http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
-[![Built with Handlebars](https://github.com/pixel-cookers/built-with-badges/blob/master/handlebars/handlebars-long-flat.png)](http://handlebarsjs.com/)
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.svg)](http://gruntjs.com/)
-[![Code on Github](https://github.com/pixel-cookers/built-with-badges/blob/master/github/github-long-flat.png)](https://github.com/stevewithington/muracontacts)
-
-
-https://github.com/pixel-cookers/built-with-badges/blob/master/handlebars/handlebars-long-flat.png
+![Built with Handlebars](https://github.com/pixel-cookers/built-with-badges/blob/master/handlebars/handlebars-short-flat.png)
+![Built with Grunt](https://github.com/pixel-cookers/built-with-badges/blob/master/grunt/grunt-short-flat.png)
+![Built with Bootstrap](https://github.com/pixel-cookers/built-with-badges/blob/master/bootstrap/bootstrap-short-flat.png)
