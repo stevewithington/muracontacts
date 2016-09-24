@@ -23,3 +23,4 @@ Unless required by applicable law or agreed to in writing, software distributed 
 ![Built with Handlebars](https://github.com/pixel-cookers/built-with-badges/blob/master/handlebars/handlebars-short-flat.png)
 ![Built with Grunt](https://github.com/pixel-cookers/built-with-badges/blob/master/grunt/grunt-short-flat.png)
 ![Built with Bootstrap](https://github.com/pixel-cookers/built-with-badges/blob/master/bootstrap/bootstrap-short-flat.png)
+![Styled with Less](https://github.com/pixel-cookers/built-with-badges/blob/master/less/less-short-flat.png)
