@@ -110,12 +110,6 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
               var text = exists ? 'Updated!' : 'Added!';
               self.setMessage({text:text, type:'success'});
               self.renderEditPhone(objform);
-
-              console.warn('objform');
-              console.log(objform);
-              console.warn('obj');
-              console.log(obj);
-
             },
             function(obj) {
               // fail
