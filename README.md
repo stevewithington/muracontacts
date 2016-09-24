@@ -4,7 +4,9 @@
 This is intended for Mura CMS (v7+) training purposes only. It should **not** to be used for production purposes.
 
 ## Instructions
-Place entire directory under the theme's `display_objects` directory. For example:
+Each branch of [this project](https://github.com/stevewithington/muracontacts) is intended to be an example of how to use Mura ORM with a custom display object.
+
+Switch to the desired branch, download it, and place entire directory under the theme's `display_objects` directory. For example:
 `{SiteID}/includes/themes/{ThemeName}/display_objects/muracontacts`
 
 A new display object option should appear in the list of available display objects when using **Inline Edit** mode. Simply drag it onto the layout in the desired display region and publish.
