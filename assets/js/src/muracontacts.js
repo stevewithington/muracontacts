@@ -67,6 +67,9 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       case 'delete':
         self.handleDeleteContact(objform);
         break;
+      case 'deletephone':
+        self.handleDeletePhone(objform);
+        break;
       default: // list or anything else that isn't accounted for
         self.renderList();
     }
@@ -83,6 +86,69 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
     self.queryParams = Mura.getQueryStringParams(window.location.hash.replace(/^#/, ''));
     self.queryParams.mcaction = self.queryParams.mcaction || 'list';
     self.routeAction(self.queryParams.mcaction);
+  }
+
+  , handleSavePhone: function(objform) {
+    var self = this;
+
+    Mura
+      .getEntity('personphonenumber')
+      .loadBy('phonenumberid', objform.phonenumberid)
+      .then(function(phone) {
+        var exists = phone.get('isnew') === 0 ? true : false;
+
+        if ( !exists ) {
+          // do something if it doesn't exist
+        }
+
+        phone
+          .set(objform)
+          .save()
+          .then(
+            function(obj) {
+              // success
+              var text = exists ? 'Updated!' : 'Added!';
+              self.setMessage({text:text, type:'success'});
+              self.renderEditPhone(objform);
+
+              console.warn('objform');
+              console.log(objform);
+              console.warn('obj');
+              console.log(obj);
+
+            },
+            function(obj) {
+              // fail
+              var errormessage = muracontacts.templates.errormessages({errors:obj.get('errors')});
+
+              self.setMessage({text:errormessage, type:'danger'});
+              self.renderEditPhone(objform);
+            }
+          );
+      });
+  }
+
+  , handleDeletePhone: function(objform) {
+    var self = this;
+
+    Mura
+      .getEntity('personphonenumber')
+      .loadBy('phonenumberid', objform.phonenumberid)
+      .then(function(phone) {
+        phone
+          .delete()
+          .then(
+            function(obj) {
+              // success
+              self.setMessage({text:'Phone Deleted!', type:'success'});
+              self.renderEditContact(objform);
+            },
+            function(obj) {
+              // fail
+              self.setMessage({text:'Error deleting phone!', type:'danger'});
+            }
+          );
+      });
   }
 
   , handleSaveContact: function(objform) {
@@ -216,7 +282,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             .getQuery()
             .then(function(phonenumbers) {
                 // success
-                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.getAll()});
+                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')}); // phonenumbers.getAll().items.properties.items
                 self.renderBody(body, message);
               },function(e) {
                 // error
@@ -235,11 +301,14 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
 
   , renderEditPhone: function(objform) {
     var self = this
+        , phone = ''
         , body = ''
-        , pid = objform === undefined || !objform.hasOwnProperty('personid') || !Mura.isUUID(objform.personid)
+        , message = ''
+        , objform = objform === undefined ? {} : objform
+        , pid = !objform.hasOwnProperty('personid') || !Mura.isUUID(objform.personid)
             ? ''
             : objform.personid
-        , phonenumberid = objform === undefined || !objform.hasOwnProperty('phonenumberid') || !Mura.usUUID(objform.phonenumberid)
+        , phonenumberid = objform === undefined || !objform.hasOwnProperty('phonenumberid') || !Mura.isUUID(objform.phonenumberid)
             ? Mura.createUUID()
             : objform.phonenumberid;
 
@@ -266,13 +335,13 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
       .then(
         function(phonebean) {
           // success
-          var phone = phonebean.getAll()
-              , body = ''
-              , message = '';
+          phone = phonebean.getAll();
 
+          phone.phonetypes = ['Home', 'Work', 'Other', 'Mobile', 'Main', 'Home Fax', 'Work Fax'];
           phone.exists = phone.isnew === 0;
           phone.phonenumberid = phone.exists ? phone.phonenumberid : phonenumberid;
           phone.label = phone.exists ? 'Update' : 'Add';
+          phone.personid = phone.exists ? phone.personid : pid;
 
           if ( objform.hasOwnProperty('phonenumber') ) {
             phone.phonenumber = objform.phonenumber;
@@ -282,8 +351,25 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             phone.phonetype = objform.phonetype;
           }
 
-          body = muracontacts.templates.editphone({phone:phone});
-          self.renderBody(body, message);
+          // Have to 'Russian Doll' Mura.getBean() calls ...
+          Mura
+            .getBean('person')
+            .loadBy('personid', pid)
+            .then(
+              function(person) {
+                // success
+                phone.fullname = person.get('fullname');
+                //phone.personid = person.get('personid');
+
+                body = muracontacts.templates.editphone({phone:phone});
+                self.renderBody(body, message);
+              }, function (e) {
+                // fail
+                console.warn('Error getting PERSON bean from the PHONEBEAN');
+                console.log(e);
+              }
+            );
+
         },
         function(e) {
           // fail
@@ -349,6 +435,45 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
 
     // Example of how to register a helper
     //Mura.Handlebars.registerHelper('helpername', function(arg1, arg2) {});
+
+    // http://doginthehat.com.au/2012/02/comparison-block-helper-for-handlebars-templates/#comment-44
+    Mura.Handlebars.registerHelper('compare', function (lvalue, operator, rvalue, options) {
+        var operators, result;
+
+        if (arguments.length < 3) {
+            throw new Error("Handlerbars Helper 'compare' needs 2 parameters");
+        }
+
+        if (options === undefined) {
+            options = rvalue;
+            rvalue = operator;
+            operator = "===";
+        }
+
+        operators = {
+            '==': function (l, r) { return l == r; },
+            '===': function (l, r) { return l === r; },
+            '!=': function (l, r) { return l != r; },
+            '!==': function (l, r) { return l !== r; },
+            '<': function (l, r) { return l < r; },
+            '>': function (l, r) { return l > r; },
+            '<=': function (l, r) { return l <= r; },
+            '>=': function (l, r) { return l >= r; },
+            'typeof': function (l, r) { return typeof l == r; }
+        };
+
+        if (!operators[operator]) {
+            throw new Error("Handlerbars Helper 'compare' doesn't know the operator " + operator);
+        }
+
+        result = operators[operator](lvalue, rvalue);
+
+        if (result) {
+            return options.fn(this);
+        } else {
+            return options.inverse(this);
+        }
+    });
   }
 
 });

@@ -1,50 +1,55 @@
 {{log phone}}
-<div class="pad">
-  <a class="btn btn-primary" href="./#mcaction=edit&amp;pid={{phone.personid}}">
-    <i class="fa fa-arrow-left"></i>
-  </a>
 
-  <!--- Delete --->
-  {{#if phoneexists}}
-    <form class="muracontacts-formlink">
-      <input type="hidden" name="mcaction" value="deletephone">
-      <input type="hidden" name="phoneid" value="{{phone.phoneid}}">
-      <button type="submit" class="btn btn-danger btn-delete">
-        <i class="fa fa-trash"></i>
-      </button>
-    </form>
-  {{/if}}
-</div>
+{{#with phone}}
+  <div class="pad">
+    <a class="btn btn-primary" href="./#mcaction=edit&amp;pid={{personid}}&amp;phonenumberid={{phonenumberid}}">
+      <i class="fa fa-arrow-left"></i>
+    </a>
 
-{{!-- <h3>{{fullname}}</h3> --}}
-<h4>{{phone.label}} Phone</h4>
-
-<form method="post" class="muracontacts-form">
-  <div class="form-group">
-    <label for="phonenumber">Phone Number</label>
-    <input type="text" class="form-control" name="phonenumber" value="{{phone.phonenumber}}">
-  </div>
-  <div class="form-group">
-    <label for="phonetype">Phone Type</label>
-    <select name="phonetype" class="form-control">
-      <option value="">- Select -</option>
-
-      <cfloop array="#phonetypes#" index="phonetype">
-        <option value="{{phonetype}}"<cfif phoneNumberBean.get('phonetype') eq phonetype> selected="selected"</cfif>>
-          #phonetype#
-        </option>
-      </cfloop>
-
-    </select>
+    <!-- Delete -->
+    {{#if exists}}
+      <form class="muracontacts-formlink">
+        <input type="hidden" name="mcaction" value="deletephone">
+        <input type="hidden" name="phonenumberid" value="{{phonenumberid}}">
+        <input type="hidden" name="personid" value="{{personid}}">
+        <button type="submit" class="btn btn-danger btn-delete">
+          <i class="fa fa-trash"></i>
+        </button>
+      </form>
+    {{/if}}
   </div>
 
-  <input type="hidden" name="mcaction" value="editphone">
-  <input type="hidden" name="personid" value="{{phone.personid}}">
-  <input type="hidden" name="phoneid" value="{{phone.phonenumberid}}">
-  <input type="hidden" name="issubmitted" value="true">
+  <h3>{{fullname}}</h3>
+  <h4>{{label}} Phone</h4>
 
-  <button type="submit" class="btn btn-primary">
-    <i class="fa fa-floppy-o"></i>
-  </button>
-  <a class="btn btn-default" href="./#mcaction=edit&amp;pid={{phone.personid}}"><i class="fa fa-ban"></i></a>
-</form>
+  <form method="post" class="muracontacts-form">
+    <div class="form-group">
+      <label for="phonenumber">Phone Number</label>
+      <input type="text" class="form-control" name="phonenumber" value="{{phonenumber}}">
+    </div>
+    <div class="form-group">
+      <label for="phonetype">Phone Type</label>
+      <select name="phonetype" class="form-control">
+        <option value="">- Select -</option>
+
+        {{#each phonetypes}}
+
+          <option value="{{this}}"{{#compare this ../phonetype}} selected="selected"{{/compare}}>
+            {{this}}
+          </option>
+        {{/each}}
+
+      </select>
+    </div>
+
+    <input type="hidden" name="mcaction" value="savephone">
+    <input type="hidden" name="personid" value="{{personid}}">
+    <input type="hidden" name="phonenumberid" value="{{phonenumberid}}">
+    <input type="hidden" name="issubmitted" value="true">
+
+    <button type="submit" class="btn btn-primary">
+      <i class="fa fa-floppy-o"></i>
+    </button>
+    <a class="btn btn-default" href="./#mcaction=edit&amp;pid={{personid}}"><i class="fa fa-ban"></i></a>
+  </form>
+{{/with}}

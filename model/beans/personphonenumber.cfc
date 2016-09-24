@@ -37,19 +37,19 @@ component
 
 		// JSON API Restrictions (used by Mura.js)
 			public any function allowDelete(m) {
-				return this.getPerson().allowDelete(m);
+				return this.getPerson().allowDelete(arguments.m);
 			}
 
 			public any function allowSave(m) {
-				return this.getPerson().allowSave(m);
+				return this.getPerson().allowSave(arguments.m);
 			}
 
 			public any function allowRead(m) {
-				return this.getPerson().allowRead(m);
+				return this.getPerson().allowRead(arguments.m);
 			}
 
 			public any function allowQueryParams(params, m) {
-				return this.getPerson().allowQueryParams(params, m);
+				return this.getPerson().allowQueryParams(arguments.params, arguments.m);
 			}
 		// @END JSON API Restrictions
 
