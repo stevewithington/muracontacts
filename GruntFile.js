@@ -83,5 +83,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('default',['handlebars','replace','concat','uglify','less']);
+  grunt.registerTask('default',['handlebars','replace','concat','uglify','less']); // may also add 'watch' to the list
 };
