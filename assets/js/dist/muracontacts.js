@@ -294,10 +294,6 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
       .then(function(phone) {
         var exists = phone.get('isnew') === 0 ? true : false;
 
-        if ( !exists ) {
-          // do something if it doesn't exist
-        }
-
         phone
           .set(objform)
           .save()
@@ -465,12 +461,8 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
             contact.namelast = objform.namelast;
           }
 
-          Mura
-            .getFeed('personphonenumber')
-            .where()
-            .prop('personid')
-            .isEQ( contact.personid )
-            .getQuery()
+          personbean
+            .get('phonenumbers')
             .then(function(phonenumbers) {
                 // success
                 body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')}); // phonenumbers.getAll().items.properties.items
@@ -480,6 +472,23 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
                 console.warn('Error getting PHONENUMBERS feed');
                 console.log(e);
               });
+
+          // OR ....
+          // Mura
+          //   .getFeed('personphonenumber')
+          //   .where()
+          //   .prop('personid')
+          //   .isEQ( contact.personid )
+          //   .getQuery()
+          //   .then(function(phonenumbers) {
+          //       // success
+          //       body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')}); // phonenumbers.getAll().items.properties.items
+          //       self.renderBody(body, message);
+          //     },function(e) {
+          //       // error
+          //       console.warn('Error getting PHONENUMBERS feed');
+          //       console.log(e);
+          //     });
 
         },
         function(e) {
