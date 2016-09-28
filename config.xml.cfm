@@ -1,1 +1,1 @@
-<displayobject name="MuraContacts" contenttypes="*"/>
+<displayobject name="Mura Contacts" contenttypes="*"/>

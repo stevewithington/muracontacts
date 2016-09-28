@@ -1,3 +1,4 @@
+// Mura.DisplayObject.{display-object-directory-name}
 Mura.DisplayObject.muracontacts = Mura.UI.extend({
   // objectparams are available under 'this.context.{yourVar}'
 

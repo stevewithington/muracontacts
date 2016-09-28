@@ -55,6 +55,24 @@ module.exports = function(grunt) {
       scripts: {
         files: ['assets/js/src/muracontacts.js','assets/js/src/templates/*.hbs'],
         tasks: ['default']
+      },
+      less: {
+        files: ['assets/css/less/*.less'],
+        tasks: ['less']
+      }
+    },
+    less: {
+      development: {
+        options: {
+          // Specifies directories to scan for @import directives when parsing.
+          // Default value is the directory of the source, which is probably what you want.
+          paths: ['assets/css/'],
+          compress: true
+        },
+        files: {
+          // compliation.css  :  source.less
+          'assets/css/muracontacts.min.css': 'assets/css/less/muracontacts.less'
+        }
       }
     }
   });
@@ -63,7 +81,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-less');
-  grunt.registerTask('default',['handlebars','replace','concat','uglify']);
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.registerTask('default',['handlebars','replace','concat','uglify','less']);
 };

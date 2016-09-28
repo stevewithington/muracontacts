@@ -195,7 +195,8 @@ this["muracontacts"]["templates"]["errormessages"] = window.mura.Handlebars.temp
 
 this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     return "<div class=\"muracontacts-heading\">\n  <h2>MuraContacts</h2>\n</div>\n<p class=\"alert alert-danger\">You must be <a href=\"./?display=login\">logged in</a> to use <strong>MuraContacts</strong></p>\n";
-},"useData":true});;Mura.DisplayObject.muracontacts = Mura.UI.extend({
+},"useData":true});;// Mura.DisplayObject.{display-object-directory-name}
+Mura.DisplayObject.muracontacts = Mura.UI.extend({
   // objectparams are available under 'this.context.{yourVar}'
 
   // Mura invokes this method by default

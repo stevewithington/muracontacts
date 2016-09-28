@@ -1,7 +1,7 @@
 {
   "name": "muracontacts",
   "version": "1.0.0",
-  "description": "",
+  "description": "Example Mura CMS client side display object. Used for training purposes only.",
   "main": "dist/muracontacts.min.js",
   "dependencies": {},
   "devDependencies": {
@@ -20,6 +20,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "Stephen J. Withington, Jr. <stephenwithington@gmail.com> (http://stephenwithington.com)",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https:/github.com/stevewithington/muracontacts.git"
+  }
 }
