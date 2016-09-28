@@ -3,8 +3,8 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
 
   // Mura invokes this method by default
   render: function() {
-    //this.container = Mura(this.context.targetEl); // doesn't work yet
-    this.container = jQuery(Mura(this.context.targetEl).node); // works
+    this.container = Mura(this.context.targetEl); // doesn't work yet
+    //this.container = jQuery(this.context.targetEl); // works
     this.main(); // Delegating to main()
   }
 

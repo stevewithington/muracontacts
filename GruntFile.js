@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       handlebars: {
           all: {
               files: {
-                  'src/templates.js': ['src/templates/*.hb','src/templates/*.hbs']
+                  'assets/js/src/templates.js': ['assets/js/src/templates/*.hb','assets/js/src/templates/*.hbs']
               },
               options: {
                    namespace: 'muracontacts.templates',
@@ -19,8 +19,8 @@ module.exports = function(grunt) {
       },
       replace: {
         prevent_templates_example: {
-                src: ['src/templates.js'],
-                dest: 'src/templates.js',
+                src: ['assets/js/src/templates.js'],
+                dest: 'assets/js/src/templates.js',
                 options: {
                   processTemplates: false
                 },
@@ -38,22 +38,22 @@ module.exports = function(grunt) {
           },
           dist: {
             src: [
-            'src/templates.js',
-            'src/muracontacts.js'
+            'assets/js/src/templates.js',
+            'assets/js/src/muracontacts.js'
             ],
-            dest: 'dist/muracontacts.js',
+            dest: 'assets/js/dist/muracontacts.js',
           },
     },
     uglify: {
       my_target: {
         files: {
-          'dist/muracontacts.min.js': ['dist/muracontacts.js']
+          'assets/js/dist/muracontacts.min.js': ['assets/js/dist/muracontacts.js']
         }
       }
     },
     watch: {
       scripts: {
-        files: ['src/muracontacts.js','src/templates/*.hbs'],
+        files: ['assets/js/src/muracontacts.js','assets/js/src/templates/*.hbs'],
         tasks: ['default']
       }
     }
@@ -64,6 +64,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-less');
   grunt.registerTask('default',['handlebars','replace','concat','uglify']);
-
 };

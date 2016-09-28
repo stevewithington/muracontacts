@@ -162,7 +162,7 @@ this["muracontacts"]["templates"]["editphone"] = window.mura.Handlebars.template
 },"4":function(container,depth0,helpers,partials,data,blockParams,depths) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression;
 
-  return "\n          <option value=\""
+  return "          <option value=\""
     + alias2(alias1(depth0, depth0))
     + "\""
     + ((stack1 = (helpers.compare || (depth0 && depth0.compare) || helpers.helperMissing).call(depth0 != null ? depth0 : {},depth0,(depths[1] != null ? depths[1].phonetype : depths[1]),{"name":"compare","hash":{},"fn":container.program(5, data, 0, blockParams, depths),"inverse":container.noop,"data":data})) != null ? stack1 : "")
@@ -200,8 +200,8 @@ this["muracontacts"]["templates"]["loggedout"] = window.mura.Handlebars.template
 
   // Mura invokes this method by default
   render: function() {
-    //this.container = Mura(this.context.targetEl); // doesn't work yet
-    this.container = jQuery(Mura(this.context.targetEl).node); // works
+    this.container = Mura(this.context.targetEl); // doesn't work yet
+    //this.container = jQuery(this.context.targetEl); // works
     this.main(); // Delegating to main()
   }
 
