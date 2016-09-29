@@ -12,10 +12,13 @@ This project uses [Grunt](http://gruntjs.com/) for combining and minifying JavaS
 
 Assuming you have [Node.js](https://nodejs.org) installed, you'll need to run `npm install` from the terminal within the project directory before running Grunt. Once you've done that, you may install the required plugins with these commands:
 
+* `npm install grunt-text-replace --save-dev`
+* `npm install grunt-contrib-handlebars --save-dev`
 * `npm install grunt-contrib-concat --save-dev`
 * `npm install grunt-contrib-uglify --save-dev`
 * `npm install grunt-contrib-less --save-dev`
 * `npm install grunt-contrib-watch --save-dev`
+
 
 ## Instructions
 Each branch of [this project](https://github.com/stevewithington/muracontacts) is intended to be an example of how to use Mura ORM with a custom display object.

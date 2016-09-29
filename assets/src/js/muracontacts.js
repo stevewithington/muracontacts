@@ -393,7 +393,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
 
     Mura
       .loader()
-      .loadcss(self.getDisplayObjectPath() + '/assets/css/muracontacts.min.css');
+      .loadcss(self.getDisplayObjectPath() + '/assets/dist/css/muracontacts.min.css');
 
     // Wraps body with muracontacts-wrapper div
     self.container
