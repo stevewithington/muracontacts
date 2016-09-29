@@ -3,6 +3,8 @@
 ## Please Note
 This is intended for Mura CMS (v7+) training purposes only. It should **not** to be used for production purposes.
 
+This is the [CFML branch of the muracontacts project](https://github.com/stevewithington/muracontacts/tree/cfml). It is intended to be an example of how a ColdFusion/CFML developer might approach creating a simple, framework-agnostic application as a self-contained display object.
+
 
 ## Getting Started
 
