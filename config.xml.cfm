@@ -1,1 +1,1 @@
-<displayobject name="MuraContacts" contenttypes="*"/>
+<displayobject name="MuraContacts" contenttypes="*" iconclass="mi-users"/>
