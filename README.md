@@ -6,15 +6,14 @@ This is intended for Mura CMS (v7+) training purposes only. It should **not** to
 
 ## Getting Started
 
-This project uses [Grunt](http://gruntjs.com/) for combining and minifying JavaScript, Less, and CSS files. Assuming you have [Node.js](https://nodejs.org) installed, you'll need to run `npm install` before running Grunt.
+This project uses [Grunt](http://gruntjs.com/) for combining and minifying JavaScript, Less, and CSS files. If you haven't used Grunt before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide.
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install the required plugins with these commands:
+Assuming you have [Node.js](https://nodejs.org) installed, you'll need to run `npm install` from the terminal within the project directory before running Grunt. Once you've done that, you may install the required plugins with these commands:
 
 * `npm install grunt-contrib-concat --save-dev`
 * `npm install grunt-contrib-uglify --save-dev`
 * `npm install grunt-contrib-less --save-dev`
 * `npm install grunt-contrib-watch --save-dev`
-
 
 ## Instructions
 Each branch of [this project](https://github.com/stevewithington/muracontacts) is intended to be an example of how to use Mura ORM with a custom display object.
