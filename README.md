@@ -6,10 +6,10 @@ This is intended for Mura CMS (v7+) training purposes only. It should **not** to
 ## Instructions
 Each branch of [this project](https://github.com/stevewithington/muracontacts) is intended to be an example of how to use Mura ORM with a custom display object.
 
-Switch to the desired branch, download it, and place entire directory under the theme's `display_objects` directory. For example:
-`{SiteID}/includes/themes/{ThemeName}/display_objects/muracontacts`
+* [ColdFusion/CFML version](https://github.com/stevewithington/muracontacts/tree/cfml)
+* [JavaScript version](https://github.com/stevewithington/muracontacts/tree/js)
 
-A new display object option should appear in the list of available display objects when using **Inline Edit** mode. Simply drag it onto the layout in the desired display region and publish.
+Switch to the desired branch, and follow the instructions listed there.
 
 ## License
 Copyright 2016 Stephen J. Withington, Jr.

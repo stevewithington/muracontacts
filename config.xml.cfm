@@ -1,1 +1,0 @@
-<displayobject name="MuraContacts" contenttypes="*"/>
