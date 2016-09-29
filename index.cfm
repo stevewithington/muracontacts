@@ -60,7 +60,7 @@
       <div class="muracontacts-heading">
         <h2>MuraContacts</h2>
       </div>
-      <p class="alert alert-info">You must be logged in to use <strong>MuraContacts</strong></p>
+      <p class="alert alert-info">You must be <a href="./?disply=login">logged in</a> to use <strong>MuraContacts</strong></p>
     </cfif>
 
   </div>
@@ -70,7 +70,7 @@
 <script>
   // mura.js
   Mura(function() {
-    Mura.loader().loadcss(Mura.themepath + '/display_objects/muracontacts/assets/css/muracontacts.min.css');
-    Mura.loader().loadjs(Mura.themepath + '/display_objects/muracontacts/assets/js/dist/muracontacts.min.js');
+    Mura.loader().loadcss(Mura.themepath + '/display_objects/muracontacts/assets/dist/css/muracontacts.min.css');
+    Mura.loader().loadjs(Mura.themepath + '/display_objects/muracontacts/assets/dist/js/muracontacts.min.js');
   });
 </script>

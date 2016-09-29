@@ -8,21 +8,18 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        // the files to concatenate
-        src: ['assets/js/src/**/*.js'],
-        // the location of the resulting JS file
-        dest: 'assets/js/dist/<%= pkg.name %>.js'
+        src: ['assets/src/js/**/*.js'],
+        dest: 'assets/dist/js/<%= pkg.name %>.js'
       }
     },
 
     uglify: {
       options: {
-        // the banner is inserted at the top of the output
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
       },
       dist: {
         files: {
-          'assets/js/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+          'assets/dist/js/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
@@ -31,24 +28,23 @@ module.exports = function(grunt) {
       development: {
         options: {
           // Specifies directories to scan for @import directives when parsing.
-          // Default value is the directory of the source, which is probably what you want.
-          paths: ['assets/css/src/'],
+          paths: ['assets/src/css/'],
           compress: true
         },
         files: {
           // compliation.css  :  source.less
-          'assets/css/dist/<%= pkg.name %>.min.css': 'assets/css/src/less/muracontacts.less'
+          'assets/dist/css/<%= pkg.name %>.min.css': 'assets/src/css/less/muracontacts.less'
         }
       }
     },
 
     watch: {
       scripts: {
-        files: ['assets/js/src/**/*.js'],
+        files: ['assets/src/js/**/*.js'],
         tasks: ['contact','uglifiy']
       },
       less: {
-        files: ['assets/css/less/*.less'],
+        files: ['assets/src/css/less/*.less'],
         tasks: ['less']
       }
     }
