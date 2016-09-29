@@ -23,6 +23,8 @@ Each branch of [this project](https://github.com/stevewithington/muracontacts) i
 Switch to the desired branch, download it, and place entire directory under the theme's `display_objects` directory. For example:
 `{SiteID}/includes/themes/{ThemeName}/display_objects/muracontacts`
 
+Assuming you're using the default Mura CMS application reload key, you should be able to add `?appreload&applydbupdates` to the URL to force Mura to reload and parse the ORM objects into database objects.
+
 A new display object option should appear in the list of available display objects when using **Inline Edit** mode. Simply drag it onto the layout in the desired display region and publish.
 
 ## License
