@@ -15,8 +15,8 @@ component
 		property name="user" cfc="user" fieldtype="many-to-one" fkcolumn="userid";
 
 	// person attributes
-		property name="namefirst" datatype="varchar" length="255" nullable=true;
-		property name="namelast" datatype="varchar" length="255" nullable=true;
+		property name="namefirst" datatype="varchar" length="255" required=true message="First Name is required.";
+		property name="namelast" datatype="varchar" length="255" required=true message="Last Name is required.";
 
 	// hidden
 		property name="datecreated" datatype="datetime" nullable=true;
@@ -51,15 +51,6 @@ component
 
 					if ( !Len(obj.get('datecreated')) ) {
 						obj.set('datecreated', Now());
-					}
-
-				// Validate required fields with custom error messages
-					if ( !Len(obj.get('namefirst')) ) {
-						errors.namefirst = 'First Name is required.';
-					}
-
-					if ( !Len(obj.get('namelast')) ) {
-						errors.namelast = 'Last Name is required.';
 					}
 
 				return this;
