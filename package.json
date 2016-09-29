@@ -1,8 +1,9 @@
+
 {
   "name": "muracontacts",
   "version": "1.0.0",
-  "description": "Example Mura CMS client side display object. Used for training purposes only.",
-  "main": "dist/muracontacts.min.js",
+  "description": "Example Mura CMS display object. Used for training purposes only.",
+  "main": "assets/dist/js/muracontacts.min.js",
   "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.5",

@@ -1,13 +1,15 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+
     handlebars: {
       all: {
         files: {
-          'assets/js/src/templates.js': ['assets/js/src/templates/*.hb', 'assets/js/src/templates/*.hbs']
+          'assets/src/js/templates/templates.js': ['assets/src/js/templates/*.hbs']
         },
         options: {
-          namespace: 'muracontacts.templates',
+          namespace: '<%= pkg.name %>.templates',
           processName: function(filePath) {
             var name=filePath.split('/');
                 name=name[name.length-1];
@@ -17,10 +19,12 @@ module.exports = function(grunt) {
         }
       }
     },
+
+    // Required to work with Mura's Handlebars
     replace: {
       prevent_templates_example: {
-        src: ['assets/js/src/templates.js'],
-        dest: 'assets/js/src/templates.js',
+        src: ['assets/src/js/templates/templates.js'],
+        dest: 'assets/src/js/templates/templates.js',
         options: {
           processTemplates: false
         },
@@ -32,46 +36,49 @@ module.exports = function(grunt) {
         }]
       }
     },
+
     concat: {
       options: {
-        separator: ';',
+        separator: ';'
       },
       dist: {
-        src: [
-          'assets/js/src/templates.js',
-          'assets/js/src/muracontacts.js'
-        ],
-        dest: 'assets/js/dist/muracontacts.js',
-      },
+        src: ['assets/src/js/**/*.js'],
+        dest: 'assets/dist/js/<%= pkg.name %>.js'
+      }
     },
+
     uglify: {
-      my_target: {
+      options: {
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+      },
+      dist: {
         files: {
-          'assets/js/dist/muracontacts.min.js': ['assets/js/dist/muracontacts.js']
+          'assets/dist/js/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
+
     watch: {
       scripts: {
-        files: ['assets/js/src/muracontacts.js', 'assets/js/src/templates/*.hbs'],
-        tasks: ['default']
+        files: ['assets/src/js/**/*.js','assets/src/js/**/*.hbs'],
+        tasks: ['handlebars','replace','contact','uglifiy']
       },
       less: {
-        files: ['assets/css/less/*.less'],
+        files: ['assets/src/css/less/*.less'],
         tasks: ['less']
       }
     },
+
     less: {
       development: {
         options: {
           // Specifies directories to scan for @import directives when parsing.
-          // Default value is the directory of the source, which is probably what you want.
-          paths: ['assets/css/'],
+          paths: ['assets/src/css/'],
           compress: true
         },
         files: {
           // compliation.css  :  source.less
-          'assets/css/muracontacts.min.css': 'assets/css/less/muracontacts.less'
+          'assets/dist/css/<%= pkg.name %>.min.css': 'assets/src/css/less/<%= pkg.name %>.less'
         }
       }
     }
