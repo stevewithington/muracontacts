@@ -1,13 +1,13 @@
 <div class="muracontacts-wrapper">
 
-  <!-- Heading -->
+  {{!-- Heading --}}
   {{#if userfirstname}}
     <div class="muracontacts-heading">
       <h2>{{userfirstname}}'s Contacts</h2>
     </div>
   {{/if}}
 
-  <!-- Messaging -->
+  {{!-- Messaging  --}}
   {{#if hasmessage}}
     <div class="muracontacts-alert alert alert-{{message.type}} alert-dismissible" role="alert">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -17,7 +17,7 @@
     </div>
   {{/if}}
 
-  <!-- Body -->
+  {{!-- Body --}}
   {{#if body}}
     <div class="muracontacts-body">
       {{{body}}}
@@ -25,4 +25,4 @@
   {{/if}}
 
 </div>
-<!-- @end muracontacts-wrapper -->
+{{!-- @end muracontacts-wrapper --}}

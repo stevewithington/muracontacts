@@ -1,6 +1,6 @@
 <tr>
 
-  <!-- Contact Name -->
+  {{!-- Contact Name --}}
   <td>
     <a class="btn" href="./#mcaction=edit&amp;pid={{properties.personid}}">
       {{properties.fullname}}
@@ -8,12 +8,12 @@
   </td>
 
   <td class="right">
-    <!-- Edit -->
+    {{!-- Edit --}}
     <a class="btn btn-success" href="./#mcaction=edit&amp;pid={{properties.personid}}">
       <i class="fa fa-pencil"></i>
     </a>
 
-    <!-- Delete -->
+    {{!-- Delete --}}
     <form method="post" class="muracontacts-form muracontacts-formlink">
       <input type="hidden" name="mcaction" value="delete">
       <input type="hidden" name="pid" value="{{properties.personid}}">

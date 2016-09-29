@@ -1,14 +1,12 @@
-{{log phone}}
-
 {{#with phone}}
   <div class="pad">
     <a class="btn btn-primary" href="./#mcaction=edit&amp;pid={{personid}}&amp;phonenumberid={{phonenumberid}}">
       <i class="fa fa-arrow-left"></i>
     </a>
 
-    <!-- Delete -->
+    {{!-- Delete --}}
     {{#if exists}}
-      <form class="muracontacts-formlink">
+      <form method="post" class="muracontacts-formlink">
         <input type="hidden" name="mcaction" value="deletephone">
         <input type="hidden" name="phonenumberid" value="{{phonenumberid}}">
         <input type="hidden" name="personid" value="{{personid}}">
@@ -33,6 +31,7 @@
         <option value="">- Select -</option>
 
         {{#each phonetypes}}
+          {{!-- using custom 'compare' helper! --}}
           <option value="{{this}}"{{#compare this ../phonetype}} selected="selected"{{/compare}}>
             {{this}}
           </option>

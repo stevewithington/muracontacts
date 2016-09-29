@@ -4,8 +4,8 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
 
   // Mura invokes this method by default
   render: function() {
-    this.container = Mura(this.context.targetEl); // doesn't work yet
-    //this.container = jQuery(this.context.targetEl); // works
+    this.container = Mura(this.context.targetEl);
+    //this.container = jQuery(this.context.targetEl); // also works
     this.main(); // Delegating to main()
   }
 
@@ -368,7 +368,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
                 body = muracontacts.templates.editphone({phone:phone});
                 self.renderBody(body, message);
               }, function (e) {
-                // fail
+                // error
                 console.warn('Error getting PERSON bean from the PHONEBEAN');
                 console.log(e);
               }

@@ -3,7 +3,7 @@
     <i class="fa fa-arrow-left"></i>
   </a>
 
-  <!-- Delete -->
+  {{!-- Delete --}}
   {{#if contact.exists}}
     <form method="post" class="muracontacts-form muracontacts-formlink">
       <input type="hidden" name="mcaction" value="delete">
@@ -36,7 +36,7 @@
   <a class="btn btn-default" href="./#mcaction=list"><i class="fa fa-ban"></i></a>
 </form>
 
-<!-- Phone Number(s) -->
+{{!-- Phone Number(s) --}}
   {{#if contact.exists}}
     <div class="row">
       <div class="col-md-12">
@@ -56,7 +56,7 @@
 
         </ul>
 
-        <!--- Add Phone --->
+        {{!-- Add Phone --}}
         <div class="pad">
           <a class="btn btn-success btn-sm muracontacts-addphone-button" href="./#mcaction=editphone&amp;pid={{contact.personid}}">
             <i class="fa fa-plus"></i> Phone
@@ -65,4 +65,4 @@
       </div>
     </div>
   {{/if}}
-<!-- @End Phone Number(s) -->
+{{!-- @End Phone Number(s) --}}
