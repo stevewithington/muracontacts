@@ -60,7 +60,7 @@
       <div class="muracontacts-heading">
         <h2>MuraContacts</h2>
       </div>
-      <p class="alert alert-info">You must be <a href="./?disply=login">logged in</a> to use <strong>MuraContacts</strong></p>
+      <p class="alert alert-info">You must be <a href="./?display=login">logged in</a> to use <strong>MuraContacts</strong></p>
     </cfif>
 
   </div>
