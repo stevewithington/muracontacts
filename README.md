@@ -21,12 +21,7 @@ A new display object option should appear in the list of available display objec
 
 If you want ot be able to play around with the files, and make changes, please note that this project uses [Grunt](http://gruntjs.com/) for combining and minifying JavaScript, Less, and CSS files. If you haven't used Grunt before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide.
 
-Assuming you have [Node.js](https://nodejs.org) installed, you'll need to run `npm install` from the terminal within the project directory before running Grunt. Once you've done that, you may install the required plugins with these commands:
-
-* `npm install grunt-contrib-concat --save-dev`
-* `npm install grunt-contrib-uglify --save-dev`
-* `npm install grunt-contrib-less --save-dev`
-* `npm install grunt-contrib-watch --save-dev`
+Assuming you have [Node.js](https://nodejs.org) installed, you'll need to run `npm install` from the terminal within the project directory before running Grunt. Once you've done that, you should now be able to run `grunt` from the command line to compile scripts and less/css files. Or, run `grunt watch` to have your files automatically compile every time you save your files.
 
 
 ## License
