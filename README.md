@@ -5,21 +5,6 @@ This is intended for Mura CMS (v7+) training purposes only. It should **not** to
 
 This is the [JS branch of the muracontacts project](https://github.com/stevewithington/muracontacts/tree/js). It is intended to be an example of how a JavaScript developer might approach creating a simple, framework-agnostic application as a self-contained display object.
 
-
-## Getting Started
-
-This project uses [Grunt](http://gruntjs.com/) for combining and minifying JavaScript, Less, and CSS files. If you haven't used Grunt before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide.
-
-Assuming you have [Node.js](https://nodejs.org) installed, you'll need to run `npm install` from the terminal within the project directory before running Grunt. Once you've done that, you may install the required plugins with these commands:
-
-* `npm install grunt-text-replace --save-dev`
-* `npm install grunt-contrib-handlebars --save-dev`
-* `npm install grunt-contrib-concat --save-dev`
-* `npm install grunt-contrib-uglify --save-dev`
-* `npm install grunt-contrib-less --save-dev`
-* `npm install grunt-contrib-watch --save-dev`
-
-
 ## Instructions
 Each branch of [this project](https://github.com/stevewithington/muracontacts) is intended to be an example of how to use Mura ORM with a custom display object.
 
@@ -29,6 +14,19 @@ Switch to the desired branch, download it, and place entire directory under the 
 Assuming you're using the default Mura CMS application reload key, you should be able to add `?appreload&applydbupdates` to the URL to force Mura to reload and parse the ORM objects into database objects.
 
 A new display object option should appear in the list of available display objects when using **Inline Edit** mode. Simply drag it onto the layout in the desired display region and publish.
+
+## Modifying Files
+
+If you want to be able to play around with the files, and make changes, please note that this project uses [Grunt](http://gruntjs.com/) for combining and minifying JavaScript, Less, and CSS files. If you haven't used Grunt before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide.
+
+Assuming you have [Node.js](https://nodejs.org) installed, you'll need to run `npm install` from the terminal within the project directory before running Grunt. Once you've done that, you may install the required plugins with these commands:
+
+* `npm install grunt-text-replace --save-dev`
+* `npm install grunt-contrib-handlebars --save-dev`
+* `npm install grunt-contrib-concat --save-dev`
+* `npm install grunt-contrib-uglify --save-dev`
+* `npm install grunt-contrib-less --save-dev`
+* `npm install grunt-contrib-watch --save-dev`
 
 ## License
 Copyright 2016 Stephen J. Withington, Jr.
