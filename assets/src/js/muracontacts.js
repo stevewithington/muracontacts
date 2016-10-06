@@ -252,7 +252,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
               , body = ''
               , message = '';
 
-          contact.exists = contact.isnew === 0;
+          contact.exists = personbean.exists();
           contact.personid = contact.exists ? contact.personid : pid;
           contact.label = contact.exists ? 'Update' : 'Add';
 
@@ -264,17 +264,22 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
             contact.namelast = objform.namelast;
           }
 
-          personbean
-            .get('phonenumbers')
-            .then(function(phonenumbers) {
-                // success
-                body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')}); // phonenumbers.getAll().items.properties.items
-                self.renderBody(body, message);
-              },function(e) {
-                // error
-                console.warn('Error getting PHONENUMBERS feed');
-                console.log(e);
-              });
+          if ( contact.exists ) {
+            personbean
+              .get('phonenumbers')
+              .then(function(phonenumbers) {
+                  // success
+                  body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')});
+                  self.renderBody(body, message);
+                },function(e) {
+                  // error
+                  console.warn('Error getting PHONENUMBERS feed');
+                  console.log(e);
+                });
+          } else {
+            body = muracontacts.templates.editcontact({contact:contact});
+            self.renderBody(body, message);
+          }
 
           // OR ....
           // Mura
@@ -285,7 +290,7 @@ Mura.DisplayObject.muracontacts = Mura.UI.extend({
           //   .getQuery()
           //   .then(function(phonenumbers) {
           //       // success
-          //       body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')}); // phonenumbers.getAll().items.properties.items
+          //       body = muracontacts.templates.editcontact({contact:contact, phonenumbers:phonenumbers.get('items')});
           //       self.renderBody(body, message);
           //     },function(e) {
           //       // error
